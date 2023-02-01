@@ -36,7 +36,7 @@ func main() {
 	extrobots.RegisterRobotDiscoveryHandlers()
 	extrobots.RegisterRobotLogHandlers()
 	extevents.RegisterEventListenerHandlers()
-	//Manuel has made some important changes
+
 	exthttp.Listen(exthttp.ListenOpts{
 		// This is the default port under which your extension is accessible.
 		// The port can be configured externally through the
