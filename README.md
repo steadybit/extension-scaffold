@@ -4,10 +4,10 @@
 
  - template repository
  - download as zip file
- - clear changelog/contributing/README/update LICENSE/remove CLA step? (TODO via makefile?)
+ - codespaces
+ - ejection procedure
  - add DOCKER_USERNAME and DOCKER_PASSWORD to secrets
  - add PERSONAL_ACCESS_TOKEN_USED_BY_CLA_FROM_ANSGAR as secret if you want to use the CLA support
- - codespaces
  - Docker image published where/how/how to make the image publicly accessible
  - Helm chart
 
