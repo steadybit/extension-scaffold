@@ -15,9 +15,13 @@ func main() {
 	// Most Steadybit extensions leverage zerolog. To encourage persistent logging setups across extensions,
 	// you may leverage the extlogging package to initialize zerolog. Among others, this package supports
 	// configuration of active log levels and the log format (JSON or plain text).
+	//
+	// Example
+	//  - to activate JSON logging, set the environment variable STEADYBIT_LOG_FORMAT="json"
+	//  - to set the log level to debug, set the environment variable STEADYBIT_LOG_LEVEL="debug"
 	extlogging.InitZeroLog()
 
-	// Many extensions require some form of configuration. These calls exist to parse and validate the
+	// Most extensions require some form of configuration. These calls exist to parse and validate the
 	// configuration obtained from environment variables.
 	extconfig.ParseConfiguration()
 	extconfig.ValidateConfiguration()
@@ -30,6 +34,7 @@ func main() {
 	// for your extension. You might want to change these because the names do not fit, or because
 	// you do not have a need for all of them.
 	extrobots.RegisterRobotDiscoveryHandlers()
+	extrobots.RegisterRobotLogHandlers()
 	extevents.RegisterEventListenerHandlers()
 
 	exthttp.Listen(exthttp.ListenOpts{
@@ -57,7 +62,7 @@ func getExtensionList() ExtensionListResponse {
 			Actions: []action_kit_api.DescribingEndpointReference{
 				{
 					Method: "GET",
-					Path:   "/robot/actions/echo",
+					Path:   "/robot/actions/log",
 				},
 			},
 		},

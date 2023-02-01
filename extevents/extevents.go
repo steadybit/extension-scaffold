@@ -26,5 +26,5 @@ func onEvent(w http.ResponseWriter, r *http.Request, body []byte) {
 
 	log.Info().Msgf("Received event %s", event.EventName)
 
-	exthttp.WriteBody(w, "{}")
+	exthttp.WriteBody(w, event_kit_api.ListenResult{})
 }
