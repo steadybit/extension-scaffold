@@ -5,16 +5,175 @@
 
 bla bla bla
 */
+###
+GET {{base_url}}
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:45 GMT
+content-length: 358
+connection: close
 /*
 # Discoveries
 
 Discoveries are used to.... 
 */
 ###
-GET {{base_url}}
+GET {{base_url}}/robot/discovery/target-description
 
 HTTP/1.1 200  - OK
 content-type: application/json
-date: Wed, 01 Feb 2023 14:50:47 GMT
-content-length: 358
+date: Wed, 01 Feb 2023 15:08:46 GMT
+connection: close
+transfer-encoding: chunked
+###
+GET {{base_url}}/robot/discovery
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:46 GMT
+content-length: 170
+connection: close
+###
+GET {{base_url}}/robot/discovery/discovered-targets
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:46 GMT
+content-length: 473
+connection: close
+###
+GET {{base_url}}/robot/discovery/attribute-descriptions
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:46 GMT
+content-length: 102
+connection: close
+/*
+# Actions
+
+TODO
+*/
+###
+GET {{base_url}}/robot/actions/log
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:46 GMT
+connection: close
+transfer-encoding: chunked
+/*
+## Action Lifecycle
+*/
+###
+POST {{base_url}}/robot/actions/log/prepare
+Content-Type: application/json
+
+{
+    "target": {
+        "name": "R2-D2",
+        "attributes": {}
+    },
+    "config": {
+        "message": "Hello from %s!"
+    }
+}
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:46 GMT
+content-length: 146
+connection: close
+###
+POST {{base_url}}/robot/actions/log/start
+Content-Type: application/json
+
+{
+    "state": {
+        "FormattedMessage": "Hello from R2-D2!"
+    }
+}
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:46 GMT
+content-length: 95
+connection: close
+###
+POST {{base_url}}/robot/actions/log/status
+Content-Type: application/json
+
+{
+    "state": {
+        "FormattedMessage": "Hello from R2-D2!"
+    }
+}
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:47 GMT
+content-length: 113
+connection: close
+###
+POST {{base_url}}/robot/actions/log/stop
+Content-Type: application/json
+
+{
+    "state": {
+        "FormattedMessage": "Hello from R2-D2!"
+    }
+}
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:47 GMT
+content-length: 94
+connection: close
+/*
+# Events
+
+TODO
+*/
+###
+POST {{base_url}}/events/all
+Content-Type: application/json
+
+{
+  "id": "da059724-a8ae-4b4b-b4f0-ee01898232d2",
+  "eventName": "experiment.execution.created",
+  "eventTime": "2021-09-01T12:00:00Z",
+  "tenant": {
+    "key": "exmpl",
+    "name": "Example Inc."
+  },
+  "principal": {
+    "principalType": "user",
+    "username": "tom.mason",
+    "name": "Tom Mason",
+    "email": "tom.mason@example.com"
+  },
+  "environment": {
+    "id": "STG",
+    "name": "Staging"
+  },
+  "team": {
+    "key": "ADM",
+    "name": "Administrators"
+  },
+  "experimentExecution": {
+    "experimentKey": "ADM-4",
+    "executionId": 34,
+    "name": "Rollout restart does not impact service availability",
+    "state": "COMPLETED",
+    "preparedTime": "2022-11-08T16:42:32.303762Z",
+    "startedTime": "2022-11-08T16:42:32.329718Z",
+    "endedTime": "2022-11-08T16:42:42.636157Z"
+  }
+}
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 15:08:47 GMT
+content-length: 3
 connection: close
