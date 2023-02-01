@@ -11,6 +11,8 @@
  - Docker image published where/how/how to make the image publicly accessible
  - Helm chart
    - remember to bumb the version
+     > Releasing charts...
+     Error: error creating GitHub release steadybit-extension-scaffold-1.0.0: POST https://api.github.com/repos/steadybit/extension-scaffold/releases: 422 Validation Failed [{Resource:Release Field:tag_name Code:already_exists Message:}]
  - when are image tags set
 
 ## Getting started
