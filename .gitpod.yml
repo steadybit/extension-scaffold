@@ -1,4 +1,4 @@
-# see https://www.gitpod.io/docs/references/gitpod-yml#ports
+# see https://www.gitpod.io/docs/references/gitpod-yml
 tasks:
   - name: Setup & Build
     before: go mod download
@@ -10,3 +10,7 @@ ports:
     onOpen: open-preview
     name: Extension
     description: Extension HTTP interface
+
+vscode:
+  extensions:
+    - "anweber.httpbook"

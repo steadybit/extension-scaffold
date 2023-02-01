@@ -1,0 +1,20 @@
+# Configure the base URL of the application
+@base_url=http://localhost:8080
+/*
+# Welcome
+
+bla bla bla
+*/
+/*
+# Discoveries
+
+Discoveries are used to.... 
+*/
+###
+GET {{base_url}}
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Wed, 01 Feb 2023 14:50:47 GMT
+content-length: 358
+connection: close
