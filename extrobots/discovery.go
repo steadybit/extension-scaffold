@@ -1,4 +1,4 @@
-package robots
+package extrobots
 
 import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
@@ -17,19 +17,19 @@ func RegisterRobotDiscoveryHandlers() {
 
 func getRobotDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         robotTargetId,
+		Id:         robotTargetID,
 		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			Method:       "GET",
 			Path:         "/robot/discovery/discovered-targets",
-			CallInterval: extutil.Ptr("10m"),
+			CallInterval: extutil.Ptr("1m"),
 		},
 	}
 }
 
 func getRobotTargetDescription() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
-		Id:       robotTargetId,
+		Id:       robotTargetID,
 		Label:    discovery_kit_api.PluralLabel{One: "Robot", Other: "Robots"},
 		Category: extutil.Ptr("example"),
 		Version:  "1.0.0-SNAPSHOT",
@@ -68,7 +68,7 @@ func getDiscoveredRobots(w http.ResponseWriter, r *http.Request, _ []byte) {
 	for i, name := range extconfig.Config.RobotNames {
 		targets[i] = discovery_kit_api.Target{
 			Id:         name,
-			TargetType: robotTargetId,
+			TargetType: robotTargetID,
 			Label:      name,
 			Attributes: map[string][]string{"robot.reportedBy": {"extension-scaffold"}},
 		}

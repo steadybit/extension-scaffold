@@ -7,7 +7,8 @@ import (
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/steadybit/extension-scaffold/extconfig"
-	"github.com/steadybit/extension-scaffold/robots"
+	"github.com/steadybit/extension-scaffold/extevents"
+	"github.com/steadybit/extension-scaffold/extrobots"
 )
 
 func main() {
@@ -28,7 +29,8 @@ func main() {
 	// This is a section you will most likely want to change: The registration of HTTP handlers
 	// for your extension. You might want to change these because the names do not fit, or because
 	// you do not have a need for all of them.
-	robots.RegisterRobotDiscoveryHandlers()
+	extrobots.RegisterRobotDiscoveryHandlers()
+	extevents.RegisterEventListenerHandlers()
 
 	exthttp.Listen(exthttp.ListenOpts{
 		// This is the default port under which your extension is accessible.
