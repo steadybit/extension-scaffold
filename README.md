@@ -10,6 +10,7 @@
  - add PERSONAL_ACCESS_TOKEN_USED_BY_CLA_FROM_ANSGAR as secret if you want to use the CLA support
  - Docker image published where/how/how to make the image publicly accessible
  - Helm chart
+ - when are image tags set
 
 ## Getting started
 
