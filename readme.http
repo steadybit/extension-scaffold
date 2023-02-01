@@ -1,12 +1,42 @@
 
 /*
 # Welcome
+
+This document guides you through the various HTTP endpoints exposed by a typical
+Steadybit extension. We recommend that you use httpYac to view the document.
+The easiest way to do this (with a running instance of this extension) is to use Gitpod:
+
+http://gitpod.io/#https://github.com/steadybit/extension-scaffold/blob/main/readme.http
+
+# Landing
+
+At the root path of extensions, extensions report what capabilities they support. They
+do so through HTTP endpoint definitions that the agent can inspect to learn more.
+
+Try it! Click the little play button next to the following HTTP call.
 */
 GET http://localhost:8080
 
 
 /*
 # Discovery
+
+The Steadybit DiscoveryKit enables the extension of Steadybit with new discovery
+capabilities. For example, DiscoveryKit can be used to author open/closed
+source discoveries for:
+
+ - proprietary technology,
+ - non-natively supported open-source tech,
+ - hardware components and
+ - every other "thing" you would want to see and attack with Steadybit.
+
+Discoveries discover targets. Our scaffolding extension implements a discovery
+logic for robots.
+
+The following HTTP call exposes the target description. The target description
+specifies how the platform should display targets in the user interface. All
+actions are associated with a single target type. Among others, this helps
+to narrow down the targets for an action.
 */
 GET http://localhost:8080/robot/discovery/target-description
 
