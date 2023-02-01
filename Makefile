@@ -27,6 +27,13 @@ audit:
 	go test -race -vet=off ./...
 	go mod verify
 
+## charttesting: Run Helm chart unit tests
+.PHONY: charttesting
+charttesting:
+	for dir in charts/steadybit-extension-*; do \
+    echo "Unit Testing $$dir"; \
+    helm unittest --helm3 $$dir; \
+  done
 
 # ==================================================================================== #
 # BUILD
