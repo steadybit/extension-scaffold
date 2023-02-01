@@ -32,14 +32,31 @@ audit:
 # BUILD
 # ==================================================================================== #
 
-## build: build the cmd/web application
+## build: build the extension
 .PHONY: build
 build:
 	go mod verify
 	go build -o=./extension
 
-## run: run the cmd/web application
+## run: run the extension
 .PHONY: run
 run: tidy build
 	./extension
 
+
+# ==================================================================================== #
+# EJECT
+# ==================================================================================== #
+
+## eject: remove / clear up files associated with the scaffold repository
+.PHONY: eject
+eject:
+	rm .github/workflows/cla.yml
+	rm CHANGELOG.md
+	mv CHANGELOG.SCAFFOLD.md CHANGELOG.md
+	rm CONTRIBUTING.md
+	mv CONTRIBUTING.SCAFFOLD.md CONTRIBUTING.md
+	rm README.md
+	mv README.SCAFFOLD.md README.md
+	rm LICENSE
+	mv LICENSE.SCAFFOLD LICENSE
