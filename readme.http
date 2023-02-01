@@ -1,73 +1,34 @@
-# Configure the base URL of the application
-@base_url=http://localhost:8080
+
 /*
 # Welcome
-
-bla bla bla
 */
-###
-GET {{base_url}}
+GET http://localhost:8080
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:45 GMT
-content-length: 358
-connection: close
+
 /*
-# Discoveries
-
-Discoveries are used to.... 
+# Discovery
 */
-###
-GET {{base_url}}/robot/discovery/target-description
+GET http://localhost:8080/robot/discovery/target-description
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:46 GMT
-connection: close
-transfer-encoding: chunked
-###
-GET {{base_url}}/robot/discovery
+GET http://localhost:8080/robot/discovery
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:46 GMT
-content-length: 170
-connection: close
-###
-GET {{base_url}}/robot/discovery/discovered-targets
+GET http://localhost:8080/robot/discovery/discovered-targets
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:46 GMT
-content-length: 473
-connection: close
-###
-GET {{base_url}}/robot/discovery/attribute-descriptions
+GET http://localhost:8080/robot/discovery/attribute-descriptions
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:46 GMT
-content-length: 102
-connection: close
+
 /*
 # Actions
-
-TODO
 */
-###
-GET {{base_url}}/robot/actions/log
+GET http://localhost:8080/robot/actions/log
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:46 GMT
-connection: close
-transfer-encoding: chunked
 /*
-## Action Lifecycle
+# Action Lifecycle
+
+### Prepare
 */
-###
-POST {{base_url}}/robot/actions/log/prepare
+
+POST http://localhost:8080/robot/actions/log/prepare
 Content-Type: application/json
 
 {
@@ -80,13 +41,10 @@ Content-Type: application/json
     }
 }
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:46 GMT
-content-length: 146
-connection: close
-###
-POST {{base_url}}/robot/actions/log/start
+/*
+### Start
+*/
+POST http://localhost:8080/robot/actions/log/start
 Content-Type: application/json
 
 {
@@ -95,13 +53,10 @@ Content-Type: application/json
     }
 }
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:46 GMT
-content-length: 95
-connection: close
-###
-POST {{base_url}}/robot/actions/log/status
+/*
+### Status
+*/
+POST http://localhost:8080/robot/actions/log/status
 Content-Type: application/json
 
 {
@@ -110,13 +65,10 @@ Content-Type: application/json
     }
 }
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:47 GMT
-content-length: 113
-connection: close
-###
-POST {{base_url}}/robot/actions/log/stop
+/*
+### Stop
+*/
+POST http://localhost:8080/robot/actions/log/stop
 Content-Type: application/json
 
 {
@@ -125,18 +77,10 @@ Content-Type: application/json
     }
 }
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:47 GMT
-content-length: 94
-connection: close
 /*
 # Events
-
-TODO
 */
-###
-POST {{base_url}}/events/all
+POST http://localhost:8080/events/all
 Content-Type: application/json
 
 {
@@ -172,8 +116,3 @@ Content-Type: application/json
   }
 }
 
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Wed, 01 Feb 2023 15:08:47 GMT
-content-length: 3
-connection: close

@@ -2,8 +2,6 @@
 
 ## Try It Out!
 
-
-
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](http://gitpod.io/#https://github.com/steadybit/extension-scaffold/blob/main/readme.http)
 
 
