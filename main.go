@@ -52,8 +52,8 @@ func getExtensionList() ExtensionListResponse {
 		ActionList: action_kit_api.ActionList{
 			Actions: []action_kit_api.DescribingEndpointReference{
 				{
-					"GET",
-					"/robot/actions/echo",
+					Method: "GET",
+					Path:   "/robot/actions/echo",
 				},
 			},
 		},
@@ -63,20 +63,20 @@ func getExtensionList() ExtensionListResponse {
 		DiscoveryList: discovery_kit_api.DiscoveryList{
 			Discoveries: []discovery_kit_api.DescribingEndpointReference{
 				{
-					"GET",
-					"/robot/discoveries",
+					Method: "GET",
+					Path:   "/robot/discoveries",
 				},
 			},
 			TargetTypes: []discovery_kit_api.DescribingEndpointReference{
 				{
-					"GET",
-					"/robot/discoveries/type",
+					Method: "GET",
+					Path:   "/robot/discoveries/type",
 				},
 			},
 			TargetAttributes: []discovery_kit_api.DescribingEndpointReference{
 				{
-					"GET",
-					"/robot/discoveries/attributes",
+					Method: "GET",
+					Path:   "/robot/discoveries/attributes",
 				},
 			},
 		},
