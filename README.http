@@ -5,7 +5,7 @@ This document guides you through the various HTTP endpoints exposed by a typical
 Steadybit extension. We recommend that you use httpYac to view the document.
 The easiest way to do this (with a running instance of this extension) is to use Gitpod:
 
-http://gitpod.io/#https://github.com/steadybit/extension-scaffold/blob/main/readme.http
+http://gitpod.io/#https://github.com/steadybit/extension-scaffold/blob/main/README.http
 
 # How Extensions work
 Extensions implement a well-defined HTTP interface that the agent uses to control the
