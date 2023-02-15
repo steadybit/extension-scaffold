@@ -37,12 +37,6 @@ The `Makefile` in the project root contains commands to easily run common admin 
 | `$ make build` | Build a binary for the `cmd/web` application and store it in the `bin` folder. |
 | `$ make run` | Build and then run a binary for the `cmd/web` application. |
 
-## Application version
-
-The application version number is generated automatically based on your latest version control system revision number. If you are using Git, this will be your latest Git commit hash. It can be retrieved by calling the `version.Get()` function from the `internal/version` package.
-
-Important: The version control system revision number will only be available when the application is built using `go build`. If you run the application using `go run` then `version.Get()` will return the string `"unavailable"`.
-
 ## Changing the module path
 
 The module path is currently set to `foobar`. If you want to change this please find and replace all instances of `foobar` in the codebase with your own module path.
