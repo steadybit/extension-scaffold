@@ -21,7 +21,21 @@ When you click one of these buttons, you will be directed to an online editor wi
 
 ## For Extension Authors
 
-TODO
+**Note:** We recommend that you [understand the extension mechanism](#understanding-the-extension-mechanism) before following these instructions.
+
+This repository ships with everything Steadybit extensions might need:
+ - Basic usage of and initialization for ActionKit, DiscoveryKit, EventKit and ExtensionKit.
+ - Extension configuration support.
+ - Dockerfile and Helm chart.
+ - GitHub actions for building, testing and publishing Docker images and Helm charts.
+ - and more.
+
+
+To use this scaffold, you need to:
+
+ 1. Get a copy of this scaffold. [Use GitHub's repository template feature](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), [fork the repository](https://github.com/steadybit/extension-scaffold/fork) or [download it](https://github.com/steadybit/extension-scaffold/archive/refs/heads/main.zip).
+ 2. Execute `make eject` within the copy to replace the readme, license etc. files with some more appropriate starting points.
+ 3. TODO
 
 # Using this
 
@@ -38,32 +52,3 @@ TODO
      Error: error creating GitHub release steadybit-extension-scaffold-1.0.0: POST https://api.github.com/repos/steadybit/extension-scaffold/releases: 422 Validation Failed [{Resource:Release Field:tag_name Code:already_exists Message:}]
  - when are image tags set
 
-## Getting started
-
-Make sure that you're in the root of the project directory, fetch the dependencies with `go mod tidy`, then run the application using `go run ./cmd/web`:
-
-```
-$ go mod tidy
-$ go run ./cmd/web
-```
-
-Then visit [http://localhost:4444](http://localhost:4444) in your browser.
-
-## Configuration settings
-
-
-
-## Admin tasks
-
-The `Makefile` in the project root contains commands to easily run common admin tasks:
-
-|     |     |
-| --- | --- |
-| `$ make tidy` | Format all code using `go fmt` and tidy the `go.mod` file. |
-| `$ make audit` | Run `go vet`, `staticheck`, execute all tests and verify required modules. |
-| `$ make build` | Build a binary for the `cmd/web` application and store it in the `bin` folder. |
-| `$ make run` | Build and then run a binary for the `cmd/web` application. |
-
-## Changing the module path
-
-The module path is currently set to `foobar`. If you want to change this please find and replace all instances of `foobar` in the codebase with your own module path.
