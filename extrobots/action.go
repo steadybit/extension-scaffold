@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-func RegisterRobotLogHandlers() {
+func RegisterActionHandlers() {
 	exthttp.RegisterHttpHandler("/robot/actions/log", exthttp.GetterAsHandler(getRobotLogActionDescription))
 	exthttp.RegisterHttpHandler("/robot/actions/log/prepare", prepareLog)
 	exthttp.RegisterHttpHandler("/robot/actions/log/start", startLog)
@@ -22,13 +22,13 @@ func RegisterRobotLogHandlers() {
 
 func getRobotLogActionDescription() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.log", robotTargetID),
+		Id:          fmt.Sprintf("%s.log", targetID),
 		Label:       "log",
 		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
 		// TODO document meaning of -SNAPSHOT
 		Version:    "1.0.0-SNAPSHOT",
-		Icon:       extutil.Ptr(robotIcon),
-		TargetType: extutil.Ptr(robotTargetID),
+		Icon:       extutil.Ptr(targetIcon),
+		TargetType: extutil.Ptr(targetID),
 		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 			{
 				Label: "by robot name",

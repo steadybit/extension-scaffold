@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func RegisterRobotDiscoveryHandlers() {
+func RegisterDiscoveryHandlers() {
 	exthttp.RegisterHttpHandler("/robot/discovery", exthttp.GetterAsHandler(getRobotDiscoveryDescription))
 	exthttp.RegisterHttpHandler("/robot/discovery/target-description", exthttp.GetterAsHandler(getRobotTargetDescription))
 	exthttp.RegisterHttpHandler("/robot/discovery/attribute-descriptions", exthttp.GetterAsHandler(getRobotAttributeDescriptions))
@@ -17,7 +17,7 @@ func RegisterRobotDiscoveryHandlers() {
 
 func getRobotDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         robotTargetID,
+		Id:         targetID,
 		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			Method:       "GET",
@@ -29,11 +29,11 @@ func getRobotDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 
 func getRobotTargetDescription() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
-		Id:       robotTargetID,
+		Id:       targetID,
 		Label:    discovery_kit_api.PluralLabel{One: "Robot", Other: "Robots"},
 		Category: extutil.Ptr("example"),
 		Version:  "1.0.0-SNAPSHOT",
-		Icon:     extutil.Ptr(robotIcon),
+		Icon:     extutil.Ptr(targetIcon),
 		Table: discovery_kit_api.Table{
 			Columns: []discovery_kit_api.Column{
 				{Attribute: "steadybit.label"},
@@ -68,7 +68,7 @@ func getDiscoveredRobots(w http.ResponseWriter, r *http.Request, _ []byte) {
 	for i, name := range extconfig.Config.RobotNames {
 		targets[i] = discovery_kit_api.Target{
 			Id:         name,
-			TargetType: robotTargetID,
+			TargetType: targetID,
 			Label:      name,
 			Attributes: map[string][]string{"robot.reportedBy": {"extension-scaffold"}},
 		}

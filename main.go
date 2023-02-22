@@ -33,8 +33,8 @@ func main() {
 	// This is a section you will most likely want to change: The registration of HTTP handlers
 	// for your extension. You might want to change these because the names do not fit, or because
 	// you do not have a need for all of them.
-	extrobots.RegisterRobotDiscoveryHandlers()
-	extrobots.RegisterRobotLogHandlers()
+	extrobots.RegisterDiscoveryHandlers()
+	extrobots.RegisterActionHandlers()
 	extevents.RegisterEventListenerHandlers()
 
 	exthttp.Listen(exthttp.ListenOpts{
