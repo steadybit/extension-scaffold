@@ -50,6 +50,10 @@ build:
 run: tidy build
 	./extension
 
+## container: build the container image
+.PHONY: container
+container:
+	docker build -t extension-scaffold:latest .
 
 # ==================================================================================== #
 # EJECT
