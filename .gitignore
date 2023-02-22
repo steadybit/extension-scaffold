@@ -1,1 +1,4 @@
 /extension
+/.devcontainer/
+/.idea
+/.vscode
