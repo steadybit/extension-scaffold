@@ -12,23 +12,36 @@ import (
 	"net/http"
 )
 
-func RegisterRobotLogHandlers() {
-	exthttp.RegisterHttpHandler("/robot/actions/log", exthttp.GetterAsHandler(getRobotLogActionDescription))
-	exthttp.RegisterHttpHandler("/robot/actions/log/prepare", prepareLog)
-	exthttp.RegisterHttpHandler("/robot/actions/log/start", startLog)
-	exthttp.RegisterHttpHandler("/robot/actions/log/status", statusLog)
-	exthttp.RegisterHttpHandler("/robot/actions/log/stop", stopLog)
+const actionBasePath = basePath + "actions/log"
+
+func RegisterActionHandlers() {
+	exthttp.RegisterHttpHandler(actionBasePath, exthttp.GetterAsHandler(getRobotLogActionDescription))
+	exthttp.RegisterHttpHandler(actionBasePath+"/prepare", prepareLog)
+	exthttp.RegisterHttpHandler(actionBasePath+"/start", startLog)
+	exthttp.RegisterHttpHandler(actionBasePath+"/status", statusLog)
+	exthttp.RegisterHttpHandler(actionBasePath+"/stop", stopLog)
+}
+
+func GetActionList() action_kit_api.ActionList {
+	return action_kit_api.ActionList{
+		Actions: []action_kit_api.DescribingEndpointReference{
+			{
+				Method: "GET",
+				Path:   actionBasePath,
+			},
+		},
+	}
 }
 
 func getRobotLogActionDescription() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.log", robotTargetID),
+		Id:          fmt.Sprintf("%s.log", targetID),
 		Label:       "log",
 		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
 		// TODO document meaning of -SNAPSHOT
 		Version:    "1.0.0-SNAPSHOT",
-		Icon:       extutil.Ptr(robotIcon),
-		TargetType: extutil.Ptr(robotTargetID),
+		Icon:       extutil.Ptr(targetIcon),
+		TargetType: extutil.Ptr(targetID),
 		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 			{
 				Label: "by robot name",
@@ -51,20 +64,20 @@ func getRobotLogActionDescription() action_kit_api.ActionDescription {
 		},
 		Prepare: action_kit_api.MutatingEndpointReference{
 			Method: "POST",
-			Path:   "/robot/actions/log/prepare",
+			Path:   actionBasePath + "/prepare",
 		},
 		Start: action_kit_api.MutatingEndpointReference{
 			Method: "POST",
-			Path:   "/robot/actions/log/start",
+			Path:   actionBasePath + "/start",
 		},
 		Status: extutil.Ptr(action_kit_api.MutatingEndpointReferenceWithCallInterval{
 			Method:       "POST",
-			Path:         "/robot/actions/log/status",
+			Path:         actionBasePath + "/status",
 			CallInterval: extutil.Ptr("1s"),
 		}),
 		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{
 			Method: "POST",
-			Path:   "/robot/actions/log/stop",
+			Path:   actionBasePath + "/stop",
 		}),
 	}
 }

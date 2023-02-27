@@ -12,8 +12,22 @@ import (
 	"net/http"
 )
 
+const eventsBasePath = "/events/all"
+
 func RegisterEventListenerHandlers() {
-	exthttp.RegisterHttpHandler("/events/all", onEvent)
+	exthttp.RegisterHttpHandler(eventsBasePath, onEvent)
+}
+
+func GetEventListenerList() event_kit_api.EventListenerList {
+	return event_kit_api.EventListenerList{
+		EventListeners: []event_kit_api.EventListener{
+			{
+				Method:   "POST",
+				Path:     eventsBasePath,
+				ListenTo: []string{"*"},
+			},
+		},
+	}
 }
 
 func onEvent(w http.ResponseWriter, r *http.Request, body []byte) {

@@ -33,8 +33,8 @@ func main() {
 	// This is a section you will most likely want to change: The registration of HTTP handlers
 	// for your extension. You might want to change these because the names do not fit, or because
 	// you do not have a need for all of them.
-	extrobots.RegisterRobotDiscoveryHandlers()
-	extrobots.RegisterRobotLogHandlers()
+	extrobots.RegisterDiscoveryHandlers()
+	extrobots.RegisterActionHandlers()
 	extevents.RegisterEventListenerHandlers()
 
 	exthttp.Listen(exthttp.ListenOpts{
@@ -58,48 +58,14 @@ func getExtensionList() ExtensionListResponse {
 	return ExtensionListResponse{
 		// See this document to learn more about the action list:
 		// https://github.com/steadybit/action-kit/blob/main/docs/action-api.md#action-list
-		ActionList: action_kit_api.ActionList{
-			Actions: []action_kit_api.DescribingEndpointReference{
-				{
-					Method: "GET",
-					Path:   "/robot/actions/log",
-				},
-			},
-		},
+		ActionList: extrobots.GetActionList(),
 
 		// See this document to learn more about the discovery list:
 		// https://github.com/steadybit/discovery-kit/blob/main/docs/discovery-api.md#index-response
-		DiscoveryList: discovery_kit_api.DiscoveryList{
-			Discoveries: []discovery_kit_api.DescribingEndpointReference{
-				{
-					Method: "GET",
-					Path:   "/robot/discovery",
-				},
-			},
-			TargetTypes: []discovery_kit_api.DescribingEndpointReference{
-				{
-					Method: "GET",
-					Path:   "/robot/discovery/target-description",
-				},
-			},
-			TargetAttributes: []discovery_kit_api.DescribingEndpointReference{
-				{
-					Method: "GET",
-					Path:   "/robot/discovery/attribute-descriptions",
-				},
-			},
-		},
+		DiscoveryList: extrobots.GetDiscoveryList(),
 
 		// See this document to learn more about the event listener list:
 		// https://github.com/steadybit/event-kit/blob/main/docs/event-api.md#event-listeners-list
-		EventListenerList: event_kit_api.EventListenerList{
-			EventListeners: []event_kit_api.EventListener{
-				{
-					Method:   "POST",
-					Path:     "/events/all",
-					ListenTo: []string{"*"},
-				},
-			},
-		},
+		EventListenerList: extevents.GetEventListenerList(),
 	}
 }
