@@ -30,25 +30,12 @@ This repository ships with everything Steadybit extensions might need:
  - GitHub actions for building, testing and publishing Docker images and Helm charts.
  - and more.
 
-
 To use this scaffold, you need to:
 
  1. Get a copy of this scaffold. [Use GitHub's repository template feature](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), [fork the repository](https://github.com/steadybit/extension-scaffold/fork) or [download it](https://github.com/steadybit/extension-scaffold/archive/refs/heads/main.zip).
  2. Execute `make eject` within the copy to replace the readme, license etc. files with some more appropriate starting points.
- 3. TODO
-
-# Using this
-
- - template repository
- - download as zip file
- - codespaces
- - ejection procedure
- - add DOCKER_USERNAME and DOCKER_PASSWORD to secrets
- - add PERSONAL_ACCESS_TOKEN_USED_BY_CLA_FROM_ANSGAR as secret if you want to use the CLA support
- - Docker image published where/how/how to make the image publicly accessible
- - Helm chart
-   - remember to bumb the version
-     > Releasing charts...
-     Error: error creating GitHub release steadybit-extension-scaffold-1.0.0: POST https://api.github.com/repos/steadybit/extension-scaffold/releases: 422 Validation Failed [{Resource:Release Field:tag_name Code:already_exists Message:}]
- - when are image tags set
+ 3. Delete the `.github/workflows/cla.yml` workflow or allow access to the access for CLA verification.
+ 4. Rename all occurrences of `extension-scaffold` to `extension-{{other name}}`
+ 5. Verify that the Docker and Helm installation instructions are correct in the `README.md`
+ 6. After the first build, ensure that you make the Docker image public through `packages -> {{your package name}} -> Package settings -> Change visibility`
 

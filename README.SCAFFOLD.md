@@ -1,42 +1,43 @@
-# README
+# Steadybit extension-scaffold
 
-# Using this
+*Open Beta: This extension generally works, but you may discover some rough edges.*
 
- - template repository
- - download as zip file
- - clear changelog/contributing/README/update LICENSE/remove CLA step? (TODO via makefile?)
- - add DOCKER_USERNAME and DOCKER_PASSWORD to secrets
- - add PERSONAL_ACCESS_TOKEN_USED_BY_CLA_FROM_ANSGAR as secret if you want to use the CLA support
- - codespaces
- - Docker image published where/how/how to make the image publicly accessible
- - Helm chart
+TODO describe what your extension is doing here from a user perspective.
 
-## Getting started
+## Configuration
 
-Make sure that you're in the root of the project directory, fetch the dependencies with `go mod tidy`, then run the application using `go run ./cmd/web`:
+| Environment Variable                  | Meaning                                                                                                                                                                | Default                 |
+|---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| `STEADYBIT_EXTENSION_ROBOT_NAMES`     | Comma-separated list of discoverable robots                                                                                                                            | Bender,Terminator,R2-D2 |
+| `STEADYBIT_EXTENSION_PORT`            | Port number that the HTTP server should bind to.                                                                                                                       | 8080                    |
+| `STEADYBIT_EXTENSION_TLS_SERVER_CERT` | Optional absolute path to a TLS certificate that will be used to open an **HTTPS** server.                                                                             |                         |
+| `STEADYBIT_EXTENSION_TLS_SERVER_KEY`  | Optional absolute path to a file containing the key to the server certificate.                                                                                         |                         |
+| `STEADYBIT_EXTENSION_TLS_CLIENT_CAS`  | Optional comma-separated list of absolute paths to files containing TLS certificates. When specified, the server will expect clients to authenticate using mutual TLS. | TODO                    |
+| `STEADYBIT_LOG_FORMAT`                | Defines the log format that the extension will use. Possible values are `text` and `json`.                                                                             | text                    |
+| `STEADYBIT_LOG_LEVEL`                 | Defines the active log level. Possible values are `debug`, `info`, `warn` and `error`.                                                                                 | info                    |
 
+## Running the Extension
+
+### Using Docker
+
+```sh
+$ docker run \
+  --rm \
+  -p 8080 \
+  --name steadybit-extension-scaffold \
+  ghcr.io/steadybit/extension-scaffold:latest
 ```
-$ go mod tidy
-$ go run ./cmd/web
+
+### Using Helm in Kubernetes
+
+```sh
+$ helm repo add steadybit-extension-scaffold https://steadybit.github.io/extension-scaffold
+$ helm repo update
+$ helm upgrade steadybit-extension-scaffold \
+    --install \
+    --wait \
+    --timeout 5m0s \
+    --create-namespace \
+    --namespace steadybit-extension \
+    steadybit-extension-scaffold/steadybit-extension-scaffold
 ```
-
-Then visit [http://localhost:4444](http://localhost:4444) in your browser.
-
-## Configuration settings
-
-
-
-## Admin tasks
-
-The `Makefile` in the project root contains commands to easily run common admin tasks:
-
-|     |     |
-| --- | --- |
-| `$ make tidy` | Format all code using `go fmt` and tidy the `go.mod` file. |
-| `$ make audit` | Run `go vet`, `staticheck`, execute all tests and verify required modules. |
-| `$ make build` | Build a binary for the `cmd/web` application and store it in the `bin` folder. |
-| `$ make run` | Build and then run a binary for the `cmd/web` application. |
-
-## Changing the module path
-
-The module path is currently set to `foobar`. If you want to change this please find and replace all instances of `foobar` in the codebase with your own module path.
