@@ -1,7 +1,12 @@
+/*
+ * Copyright 2023 steadybit GmbH. All rights reserved.
+ */
+
 package extrobots
 
 import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-scaffold/extconfig"
@@ -54,19 +59,15 @@ func getDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 
 func getTargetDescription() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
-		Id:   targetID,
-		Icon: extutil.Ptr(targetIcon),
+		Id:      targetID,
+		Version: extbuild.GetSemverVersionStringOrUnknown(),
+		Icon:    extutil.Ptr(targetIcon),
 
 		// Labels used in the UI
 		Label: discovery_kit_api.PluralLabel{One: "Robot", Other: "Robots"},
 
 		// Category for the targets to appear in
 		Category: extutil.Ptr("example"),
-
-		// Version of the target type; this used for caching
-		// When doing changes the version should be bumped.
-		// When developing the SNAPSHOT suffix will prevent
-		Version: "1.0.0-SNAPSHOT",
 
 		// Specify attributes shown in table columns and to be used for sorting
 		Table: discovery_kit_api.Table{

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2023 steadybit GmbH. All rights reserved.
+ */
+
 package extrobots
 
 import (
@@ -6,6 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	extension_kit "github.com/steadybit/extension-kit"
+	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extconversion"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
@@ -38,10 +43,9 @@ func getRobotLogActionDescription() action_kit_api.ActionDescription {
 		Id:          fmt.Sprintf("%s.log", targetID),
 		Label:       "log",
 		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
-		// TODO document meaning of -SNAPSHOT
-		Version:    "1.0.0-SNAPSHOT",
-		Icon:       extutil.Ptr(targetIcon),
-		TargetType: extutil.Ptr(targetID),
+		Version:     extbuild.GetSemverVersionStringOrUnknown(),
+		Icon:        extutil.Ptr(targetIcon),
+		TargetType:  extutil.Ptr(targetID),
 		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 			{
 				Label: "by robot name",
