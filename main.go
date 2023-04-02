@@ -1,3 +1,7 @@
+/*
+ * Copyright 2023 steadybit GmbH. All rights reserved.
+ */
+
 package main
 
 import (
@@ -7,7 +11,7 @@ import (
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
-	"github.com/steadybit/extension-scaffold/extconfig"
+	"github.com/steadybit/extension-scaffold/config"
 	"github.com/steadybit/extension-scaffold/extevents"
 	"github.com/steadybit/extension-scaffold/extrobots"
 )
@@ -28,8 +32,8 @@ func main() {
 
 	// Most extensions require some form of configuration. These calls exist to parse and validate the
 	// configuration obtained from environment variables.
-	extconfig.ParseConfiguration()
-	extconfig.ValidateConfiguration()
+	config.ParseConfiguration()
+	config.ValidateConfiguration()
 
 	// This call registers a handler for the extension's root path. This is the path initially accessed
 	// by the Steadybit agent to obtain the extension's capabilities.

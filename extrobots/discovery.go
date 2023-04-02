@@ -9,7 +9,7 @@ import (
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
-	"github.com/steadybit/extension-scaffold/extconfig"
+	"github.com/steadybit/extension-scaffold/config"
 	"net/http"
 )
 
@@ -99,9 +99,9 @@ func getAttributeDescriptions() discovery_kit_api.AttributeDescriptions {
 	}
 }
 
-func getDiscoveredTargets(w http.ResponseWriter, r *http.Request, _ []byte) {
-	targets := make([]discovery_kit_api.Target, len(extconfig.Config.RobotNames))
-	for i, name := range extconfig.Config.RobotNames {
+func getDiscoveredTargets(w http.ResponseWriter, _ *http.Request, _ []byte) {
+	targets := make([]discovery_kit_api.Target, len(config.Config.RobotNames))
+	for i, name := range config.Config.RobotNames {
 		targets[i] = discovery_kit_api.Target{
 			Id:         name,
 			TargetType: targetID,
