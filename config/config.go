@@ -1,7 +1,8 @@
-// SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2022 Steadybit GmbH
+/*
+ * Copyright 2023 steadybit GmbH. All rights reserved.
+ */
 
-package extconfig
+package config
 
 import (
 	"github.com/kelseyhightower/envconfig"
