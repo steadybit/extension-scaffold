@@ -5,56 +5,72 @@
 package extrobots
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"github.com/rs/zerolog/log"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
-	extension_kit "github.com/steadybit/extension-kit"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extconversion"
-	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
-	"net/http"
 )
 
-const actionBasePath = basePath + "actions/log"
+type logAction struct{}
 
-func RegisterActionHandlers() {
-	exthttp.RegisterHttpHandler(actionBasePath, exthttp.GetterAsHandler(getRobotLogActionDescription))
-	exthttp.RegisterHttpHandler(actionBasePath+"/prepare", prepareLog)
-	exthttp.RegisterHttpHandler(actionBasePath+"/start", startLog)
-	exthttp.RegisterHttpHandler(actionBasePath+"/status", statusLog)
-	exthttp.RegisterHttpHandler(actionBasePath+"/stop", stopLog)
+// Make sure lambdaAction implements all required interfaces
+var (
+	_ action_kit_sdk.Action[LogActionState]           = (*logAction)(nil)
+	_ action_kit_sdk.ActionWithStatus[LogActionState] = (*logAction)(nil)
+	_ action_kit_sdk.ActionWithStop[LogActionState]   = (*logAction)(nil)
+)
+
+type LogActionState struct {
+	FormattedMessage string
 }
 
-func GetActionList() action_kit_api.ActionList {
-	return action_kit_api.ActionList{
-		Actions: []action_kit_api.DescribingEndpointReference{
-			{
-				Method: "GET",
-				Path:   actionBasePath,
-			},
-		},
-	}
+func NewLogAction() action_kit_sdk.Action[LogActionState] {
+	return &logAction{}
 }
 
-func getRobotLogActionDescription() action_kit_api.ActionDescription {
+func (l *logAction) NewEmptyState() LogActionState {
+	return LogActionState{}
+}
+
+// Describe returns the action description for the platform with all required information.
+func (l *logAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
 		Id:          fmt.Sprintf("%s.log", targetID),
 		Label:       "log",
 		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
-		TargetType:  extutil.Ptr(targetID),
+		// The target type this action is for
+		TargetType: extutil.Ptr(targetID),
+
+		// You can provide a list of target templates to help the user select targets.
+		// A template can be used to pre-fill a selection
 		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 			{
 				Label: "by robot name",
 				Query: "steadybit.label=\"\"",
 			},
 		}),
-		Category:    extutil.Ptr("other"),
-		Kind:        action_kit_api.Other,
+		// Category for the targets to appear in
+		Category: extutil.Ptr("other"),
+
+		// To clarify the purpose of the action, you can set a kind.
+		//   Attack: Will cause harm to targets
+		//   Check: Will perform checks on the targets
+		//   LoadTest: Will perform load tests on the targets
+		//   Other
+		Kind: action_kit_api.Other,
+
+		// How the action is controlled over time.
+		//   External: The agent takes care and calls stop then the time has passed. Requires a duration parameter. Use this when the duration is known in advance.
+		//   Internal: The action hast to implement the status endpoint to signal when the action is done. Use this when the duration is not known in advance.
+		//   Instantaneous: The action is done immediately. Use this for actions that happen immediately, e.g. a reboot.
 		TimeControl: action_kit_api.Internal,
+
+		// The parameters for the action
 		Parameters: []action_kit_api.ActionParameter{
 			{
 				Name:         "message",
@@ -66,143 +82,79 @@ func getRobotLogActionDescription() action_kit_api.ActionDescription {
 				Order:        extutil.Ptr(0),
 			},
 		},
-		Prepare: action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   actionBasePath + "/prepare",
-		},
-		Start: action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   actionBasePath + "/start",
-		},
 		Status: extutil.Ptr(action_kit_api.MutatingEndpointReferenceWithCallInterval{
-			Method:       "POST",
-			Path:         actionBasePath + "/status",
 			CallInterval: extutil.Ptr("1s"),
 		}),
-		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   actionBasePath + "/stop",
-		}),
+		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
 	}
 }
 
-type LogActionState struct {
-	FormattedMessage string
-}
+// Prepare is called before the action is started.
+// It can be used to validate the parameters and prepare the action.
+// It must not cause any harmful effects.
+// The passed in state is included in the subsequent calls to start/status/stop.
+// So the state should contain all information needed to execute the action and even more important: to be able to stop it.
+func (l *logAction) Prepare(_ context.Context, state *LogActionState, request action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
+	log.Info().Str("message", state.FormattedMessage).Msg("Logging in log action **prepare**")
+	state.FormattedMessage = fmt.Sprintf(request.Config["message"].(string), request.Target.Name)
 
-func prepareLog(w http.ResponseWriter, _ *http.Request, body []byte) {
-	var request action_kit_api.PrepareActionRequestBody
-	err := json.Unmarshal(body, &request)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to parse request body", err))
-		return
-	}
-
-	state := LogActionState{
-		FormattedMessage: fmt.Sprintf(request.Config["message"].(string), request.Target.Name),
-	}
-
-	var convertedState action_kit_api.ActionState
-	err = extconversion.Convert(state, &convertedState)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to encode action state", err))
-		return
-	}
-
-	formattedMessage := fmt.Sprintf("Logging in log action **prepare**: %s", state.FormattedMessage)
-	log.Info().Msg(formattedMessage)
-
-	exthttp.WriteBody(w, action_kit_api.PrepareResult{
-		State: convertedState,
+	return &action_kit_api.PrepareResult{
+		//These messages will show up in agent log
 		Messages: extutil.Ptr([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
-				Message: formattedMessage,
+				Message: fmt.Sprintf("Prepared logging '%s'", state.FormattedMessage),
 			},
-		})})
+		})}, nil
 }
 
-func startLog(w http.ResponseWriter, _ *http.Request, body []byte) {
-	var request action_kit_api.StartActionRequestBody
-	err := json.Unmarshal(body, &request)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to parse request body", err))
-		return
-	}
+// Start is called to start the action
+// You can mutate the state here.
+// You can use the result to return messages/errors/metrics or artifacts
+func (l *logAction) Start(_ context.Context, state *LogActionState) (*action_kit_api.StartResult, error) {
+	log.Info().Str("message", state.FormattedMessage).Msg("Logging in log action **start**")
 
-	var state LogActionState
-	err = extconversion.Convert(request.State, &state)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to convert log action state", err))
-		return
-	}
-
-	formattedMessage := fmt.Sprintf("Logging in log action **start**: %s", state.FormattedMessage)
-	log.Info().Msg(formattedMessage)
-
-	exthttp.WriteBody(w, action_kit_api.StartResult{
+	return &action_kit_api.StartResult{
+		//These messages will show up in agent log
 		Messages: extutil.Ptr([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
-				Message: formattedMessage,
+				Message: fmt.Sprintf("Started logging '%s'", state.FormattedMessage),
 			},
-		}),
-	})
+		})}, nil
 }
 
-func statusLog(w http.ResponseWriter, _ *http.Request, body []byte) {
-	var request action_kit_api.ActionStatusRequestBody
-	err := json.Unmarshal(body, &request)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to parse request body", err))
-		return
-	}
+// Status is optional.
+// If you implement that it will be called periodically to check the status of the action.
+// You can use the result to signal that the action is done and to return messages/errors/metrics or artifacts
+func (l *logAction) Status(_ context.Context, state *LogActionState) (*action_kit_api.StatusResult, error) {
+	log.Info().Str("message", state.FormattedMessage).Msg("Logging in log action **status**")
 
-	var state LogActionState
-	err = extconversion.Convert(request.State, &state)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to convert log action state", err))
-		return
-	}
-
-	formattedMessage := fmt.Sprintf("Logging in log action **status**: %s", state.FormattedMessage)
-	log.Info().Msg(formattedMessage)
-
-	exthttp.WriteBody(w, action_kit_api.StatusResult{
-		Completed: true,
+	return &action_kit_api.StatusResult{
+		//indicate that the action is still running
+		Completed: false,
+		//These messages will show up in agent log
 		Messages: extutil.Ptr([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
-				Message: formattedMessage,
+				Message: fmt.Sprintf("Status for logging '%s'", state.FormattedMessage),
 			},
-		}),
-	})
+		})}, nil
 }
 
-func stopLog(w http.ResponseWriter, _ *http.Request, body []byte) {
-	var request action_kit_api.StopActionRequestBody
-	err := json.Unmarshal(body, &request)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to parse request body", err))
-		return
-	}
+// Stop is called to stop the action
+// It will be called even if the start method did not complete successfully.
+// It should be implemented in a immutable way, as the agent might to retries if the stop method timeouts.
+// You can use the result to return messages/errors/metrics or artifacts
+func (l *logAction) Stop(_ context.Context, state *LogActionState) (*action_kit_api.StopResult, error) {
+	log.Info().Str("message", state.FormattedMessage).Msg("Logging in log action **status**")
 
-	var state LogActionState
-	err = extconversion.Convert(request.State, &state)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to convert log action state", err))
-		return
-	}
-
-	formattedMessage := fmt.Sprintf("Logging in log action **stop**: %s", state.FormattedMessage)
-	log.Info().Msg(formattedMessage)
-
-	exthttp.WriteBody(w, action_kit_api.StopResult{
+	return &action_kit_api.StopResult{
+		//These messages will show up in agent log
 		Messages: extutil.Ptr([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
-				Message: formattedMessage,
+				Message: fmt.Sprintf("Stopped logging '%s'", state.FormattedMessage),
 			},
-		}),
-	})
+		})}, nil
 }

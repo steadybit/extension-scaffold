@@ -6,6 +6,7 @@ package main
 
 import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/event-kit/go/event_kit_api"
 	"github.com/steadybit/extension-kit/extbuild"
@@ -43,7 +44,7 @@ func main() {
 	// for your extension. You might want to change these because the names do not fit, or because
 	// you do not have a need for all of them.
 	extrobots.RegisterDiscoveryHandlers()
-	extrobots.RegisterActionHandlers()
+	action_kit_sdk.RegisterAction(extrobots.NewLogAction())
 	extevents.RegisterEventListenerHandlers()
 
 	exthttp.Listen(exthttp.ListenOpts{
@@ -67,7 +68,7 @@ func getExtensionList() ExtensionListResponse {
 	return ExtensionListResponse{
 		// See this document to learn more about the action list:
 		// https://github.com/steadybit/action-kit/blob/main/docs/action-api.md#action-list
-		ActionList: extrobots.GetActionList(),
+		ActionList: action_kit_sdk.GetActionList(),
 
 		// See this document to learn more about the discovery list:
 		// https://github.com/steadybit/discovery-kit/blob/main/docs/discovery-api.md#index-response
