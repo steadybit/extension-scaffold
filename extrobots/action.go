@@ -16,11 +16,11 @@ import (
 
 type logAction struct{}
 
-// Make sure lambdaAction implements all required interfaces
+// Make sure action implements all required interfaces
 var (
 	_ action_kit_sdk.Action[LogActionState]           = (*logAction)(nil)
-	_ action_kit_sdk.ActionWithStatus[LogActionState] = (*logAction)(nil)
-	_ action_kit_sdk.ActionWithStop[LogActionState]   = (*logAction)(nil)
+	_ action_kit_sdk.ActionWithStatus[LogActionState] = (*logAction)(nil) // Optional, needed when the action needs a status method
+	_ action_kit_sdk.ActionWithStop[LogActionState]   = (*logAction)(nil)  // Optional, needed when the action needs a stop method
 )
 
 type LogActionState struct {
