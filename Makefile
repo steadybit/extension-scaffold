@@ -62,7 +62,6 @@ container:
 ## eject: remove / clear up files associated with the scaffold repository
 .PHONY: eject
 eject:
-	rm .github/workflows/cla.yml
 	rm CHANGELOG.md
 	mv CHANGELOG.SCAFFOLD.md CHANGELOG.md
 	rm CONTRIBUTING.md
