@@ -107,15 +107,13 @@ jobs:
 
       - name: Add unit testing plugin
         run: |
-          helm plugin install https://github.com/quintush/helm-unittest --version 0.2.11
+          helm plugin install https://github.com/quintush/helm-unittest
 
       - name: Run unit tests
         run: make charttesting
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.3.1
-        with:
-          version: v3.5.1
+        uses: helm/chart-testing-action@v2.3.0
 
       - name: Run chart-testing (list-changed)
         id: list-changed
