@@ -32,6 +32,11 @@ func main() {
 	// The information is mostly handy for debugging purposes.
 	extbuild.PrintBuildInformation()
 
+	//This will start /health/liveness and /health/readiness endpoints on port 8081 for use with kubernetes
+	//The port can be configured using the STEADYBIT_EXTENSION_HEALTH_PORT environment variable
+	exthealth.SetReady(false)
+	exthealth.StartProbes(8081)
+
 	// Most extensions require some form of configuration. These calls exist to parse and validate the
 	// configuration obtained from environment variables.
 	config.ParseConfiguration()
@@ -51,9 +56,8 @@ func main() {
 	//This will install a signal handlder, that will stop active actions when receiving a SIGURS1, SIGTERM or SIGINT
 	action_kit_sdk.InstallSignalHandler()
 
-	//This will start /health/liveness and /health/readiness endpoints on port 8081 for use with kubernetes
-	//The port can be configured using the STEADYBIT_EXTENSION_HEALTH_PORT environment variable
-	exthealth.StartProbes(8081)
+	//This will switch the readiness state of the application to true.
+	exthealth.SetReady(true)
 
 	exthttp.Listen(exthttp.ListenOpts{
 		// This is the default port under which your extension is accessible.
