@@ -37,5 +37,6 @@ To use this scaffold, you need to:
  3. Delete the `.github/workflows/cla.yml` workflow or allow access to the access for CLA verification.
  4. Rename all occurrences of `extension-scaffold` to `extension-{{other name}}`
  5. Verify that the Docker and Helm installation instructions are correct in the `README.md`
- 6. After the first build, ensure that you make the Docker image public through `packages -> {{your package name}} -> Package settings -> Change visibility`
+ 6. Create an empty branch named "gh-pages"
+ 7. After the first build, ensure that you make the Docker image public through `packages -> {{your package name}} -> Package settings -> Change visibility`
 
