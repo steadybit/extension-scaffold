@@ -41,3 +41,8 @@ $ helm upgrade steadybit-extension-scaffold \
     --namespace steadybit-extension \
     steadybit-extension-scaffold/steadybit-extension-scaffold
 ```
+
+## Register the extension
+
+Make sure to register the extension at the steadybit platform. Please refer to
+the [documentation](https://docs.steadybit.com/integrate-with-steadybit/extensions/extension-installation) for more information.
