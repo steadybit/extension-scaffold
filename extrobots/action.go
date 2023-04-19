@@ -20,7 +20,7 @@ type logAction struct{}
 var (
 	_ action_kit_sdk.Action[LogActionState]           = (*logAction)(nil)
 	_ action_kit_sdk.ActionWithStatus[LogActionState] = (*logAction)(nil) // Optional, needed when the action needs a status method
-	_ action_kit_sdk.ActionWithStop[LogActionState]   = (*logAction)(nil)  // Optional, needed when the action needs a stop method
+	_ action_kit_sdk.ActionWithStop[LogActionState]   = (*logAction)(nil) // Optional, needed when the action needs a stop method
 )
 
 type LogActionState struct {
@@ -43,16 +43,17 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
-		// The target type this action is for
-		TargetType: extutil.Ptr(targetID),
-
-		// You can provide a list of target templates to help the user select targets.
-		// A template can be used to pre-fill a selection
-		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
-			{
-				Label: "by robot name",
-				Query: "steadybit.label=\"\"",
-			},
+		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+			// The target type this action is for
+			TargetType: targetID,
+			// You can provide a list of target templates to help the user select targets.
+			// A template can be used to pre-fill a selection
+			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+				{
+					Label: "by robot name",
+					Query: "steadybit.label=\"\"",
+				},
+			}),
 		}),
 		// Category for the targets to appear in
 		Category: extutil.Ptr("other"),
