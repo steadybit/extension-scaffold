@@ -26,8 +26,8 @@ github.com/steadybit/discovery-kit/go/discovery_kit_api v1.3.0 h1:HwvovoYbAYpJ5P
 github.com/steadybit/discovery-kit/go/discovery_kit_api v1.3.0/go.mod h1:OnIfjrBhmMQCYxriHmr8mT1wCpvqIZxwBHWnanFhgNA=
 github.com/steadybit/event-kit/go/event_kit_api v1.1.0 h1:fz7gBUqEz67dhelYmWzyWIf/2Q+39y6bET2Gq7Hkeh4=
 github.com/steadybit/event-kit/go/event_kit_api v1.1.0/go.mod h1:YAliz224K5oWE48iOz73kLdLR/YuqjI7UraOTHJmlAA=
-github.com/steadybit/extension-kit v1.7.9 h1:qL8s8iq/UE7pQbLSdiK4hYZNGDqj/SRsZ8tb3KpJjFY=
-github.com/steadybit/extension-kit v1.7.9/go.mod h1:zC5Tw+wrJTx4xvOlsIY+MfMoRYoglj83vR15Xr3aP5c=
+github.com/steadybit/extension-kit v1.7.12 h1:e61q54Yy75aRNoubxGiwhotvcsHGiqrJcJGuQEmPI38=
+github.com/steadybit/extension-kit v1.7.12/go.mod h1:zC5Tw+wrJTx4xvOlsIY+MfMoRYoglj83vR15Xr3aP5c=
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
 golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
