@@ -11,6 +11,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
+	"github.com/steadybit/extension-kit/extconversion"
 	"github.com/steadybit/extension-kit/extutil"
 )
 
@@ -25,6 +26,10 @@ var (
 
 type LogActionState struct {
 	FormattedMessage string
+}
+
+type LogActionConfig struct {
+	Message string
 }
 
 func NewLogAction() action_kit_sdk.Action[LogActionState] {
@@ -97,7 +102,12 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 // So the state should contain all information needed to execute the action and even more important: to be able to stop it.
 func (l *logAction) Prepare(_ context.Context, state *LogActionState, request action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
 	log.Info().Str("message", state.FormattedMessage).Msg("Logging in log action **prepare**")
-	state.FormattedMessage = fmt.Sprintf(request.Config["message"].(string), request.Target.Name)
+
+	var config LogActionConfig
+	if err := extconversion.Convert(request.Config, &config); err != nil {
+		return nil, err
+	}
+	state.FormattedMessage = fmt.Sprintf(config.Message, request.Target.Name)
 
 	return &action_kit_api.PrepareResult{
 		//These messages will show up in agent log
