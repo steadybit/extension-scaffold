@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
+	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extconversion"
 	"github.com/steadybit/extension-kit/extutil"
@@ -105,8 +106,9 @@ func (l *logAction) Prepare(_ context.Context, state *LogActionState, request ac
 
 	var config LogActionConfig
 	if err := extconversion.Convert(request.Config, &config); err != nil {
-		return nil, err
+		return nil, extension_kit.ToError("Failed to unmarshal the config.", err)
 	}
+
 	state.FormattedMessage = fmt.Sprintf(config.Message, request.Target.Name)
 
 	return &action_kit_api.PrepareResult{
