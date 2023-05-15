@@ -2,15 +2,18 @@
 
 TODO describe what your extension is doing here from a user perspective.
 
+TODO optionally add your extension to the [Reliability Hub](https://hub.steadybit.com/) by creating
+a [pull request](https://github.com/steadybit/reliability-hub-db) and add a link to this README.
+
 ## Configuration
 
-| Environment Variable              | Meaning                                     | Default                 |
-|-----------------------------------|---------------------------------------------|-------------------------|
-| `STEADYBIT_EXTENSION_ROBOT_NAMES` | Comma-separated list of discoverable robots | Bender,Terminator,R2-D2 |
+| Environment Variable              | Meaning                                     | Required | Default                 |
+|-----------------------------------|---------------------------------------------|----------|-------------------------|
+| `STEADYBIT_EXTENSION_ROBOT_NAMES` | Comma-separated list of discoverable robots | yes      | Bender,Terminator,R2-D2 |
 
 The extension supports all environment variables provided by [steadybit/extension-kit](https://github.com/steadybit/extension-kit#environment-variables).
 
-## Running the Extension
+## Installation
 
 ### Using Docker
 
