@@ -58,7 +58,7 @@ run: tidy build
 ## container: build the container image
 .PHONY: container
 container:
-	docker build -t extension-scaffold:latest .
+	docker build --build-arg ADDITIONAL_BUILD_PARAMS="-cover" -t extension-scaffold:latest .
 
 # ==================================================================================== #
 # EJECT

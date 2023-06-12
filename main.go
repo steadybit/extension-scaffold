@@ -56,6 +56,9 @@ func main() {
 	//This will install a signal handlder, that will stop active actions when receiving a SIGURS1, SIGTERM or SIGINT
 	action_kit_sdk.InstallSignalHandler()
 
+	//This will register the coverage endpoints for the extension (used by action_kit_test)
+	action_kit_sdk.RegisterCoverageEndpoints()
+
 	//This will switch the readiness state of the application to true.
 	exthealth.SetReady(true)
 
