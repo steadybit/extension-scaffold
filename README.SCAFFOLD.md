@@ -18,7 +18,7 @@ The extension supports all environment variables provided by [steadybit/extensio
 ### Using Docker
 
 ```sh
-$ docker run \
+docker run \
   --rm \
   -p 8080 \
   --name steadybit-extension-scaffold \
@@ -28,9 +28,9 @@ $ docker run \
 ### Using Helm in Kubernetes
 
 ```sh
-$ helm repo add steadybit-extension-scaffold https://steadybit.github.io/extension-scaffold
-$ helm repo update
-$ helm upgrade steadybit-extension-scaffold \
+helm repo add steadybit-extension-scaffold https://steadybit.github.io/extension-scaffold
+helm repo update
+helm upgrade steadybit-extension-scaffold \
     --install \
     --wait \
     --timeout 5m0s \
