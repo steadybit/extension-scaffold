@@ -32,7 +32,7 @@ func TestWithMinikube(t *testing.T) {
 
 func testRunscaffold(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
 	config := struct{}{}
-	exec, err := e.RunAction("com.github.steadybit.extension_scaffold.robot.log", &action_kit_api.Target{
+	exec, err := e.RunAction("com.steadybit.extension_scaffold.robot.log", &action_kit_api.Target{
     Name: "robot",
   }, config, nil)
 	require.NoError(t, err)
