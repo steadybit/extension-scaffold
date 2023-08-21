@@ -5,6 +5,7 @@
 package main
 
 import (
+	"github.com/rs/zerolog"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
@@ -13,6 +14,7 @@ import (
 	"github.com/steadybit/extension-kit/exthealth"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
+	"github.com/steadybit/extension-kit/extruntime"
 	"github.com/steadybit/extension-scaffold/config"
 	"github.com/steadybit/extension-scaffold/extevents"
 	"github.com/steadybit/extension-scaffold/extrobots"
@@ -31,6 +33,7 @@ func main() {
 	// Build information is set at compile-time. This line writes the build information to the log.
 	// The information is mostly handy for debugging purposes.
 	extbuild.PrintBuildInformation()
+	extruntime.LogRuntimeInformation(zerolog.DebugLevel)
 
 	//This will start /health/liveness and /health/readiness endpoints on port 8081 for use with kubernetes
 	//The port can be configured using the STEADYBIT_EXTENSION_HEALTH_PORT environment variable
