@@ -42,6 +42,7 @@ func GetDiscoveryList() discovery_kit_api.DiscoveryList {
 				Path:   discoveryBasePath + "/attribute-descriptions",
 			},
 		},
+		TargetEnrichmentRules: []discovery_kit_api.DescribingEndpointReference{},
 	}
 }
 
