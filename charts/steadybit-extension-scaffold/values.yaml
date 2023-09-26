@@ -94,3 +94,9 @@ extraEnv: []
 #  - secretRef:
 #    name: env-secrets
 extraEnvFrom: []
+
+discovery:
+  attributes:
+    excludes:
+      # discovery.attributes.excludes.robot -- List of attributes to exclude from Robot discovery.
+      robot: []
