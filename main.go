@@ -18,6 +18,7 @@ import (
 	"github.com/steadybit/extension-scaffold/config"
 	"github.com/steadybit/extension-scaffold/extevents"
 	"github.com/steadybit/extension-scaffold/extrobots"
+	_ "net/http/pprof" //allow pprof
 )
 
 func main() {
