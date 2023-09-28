@@ -6,8 +6,8 @@ package extrobots
 
 import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
-  "github.com/steadybit/discovery-kit/go/discovery_kit_commons"
-  "github.com/steadybit/extension-kit/extbuild"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_commons"
+	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-scaffold/config"
@@ -109,10 +109,10 @@ func getDiscoveredTargets(w http.ResponseWriter, _ *http.Request, _ []byte) {
 			TargetType: targetID,
 			Label:      name,
 			Attributes: map[string][]string{
-        "steadybit.label": {name},
-        "robot.reportedBy": {"extension-scaffold"},
-        "robot.tags.firstTag": {"just a tag"},
-      },
+				"steadybit.label":     {name},
+				"robot.reportedBy":    {"extension-scaffold"},
+				"robot.tags.firstTag": {"just a tag"},
+			},
 		}
 	}
 	exthttp.WriteBody(w, discovery_kit_api.DiscoveredTargets{Targets: discovery_kit_commons.ApplyAttributeExcludes(targets, config.Config.DiscoveryAttributesExcludesRobot)})

@@ -4,15 +4,15 @@
 package e2e
 
 import (
-  "context"
-  "github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"context"
+	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_test/e2e"
-  "github.com/steadybit/discovery-kit/go/discovery_kit_api"
-  "github.com/steadybit/discovery-kit/go/discovery_kit_test/validate"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_test/validate"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
-  "time"
+	"time"
 )
 
 func TestWithMinikube(t *testing.T) {
@@ -21,9 +21,9 @@ func TestWithMinikube(t *testing.T) {
 		Port: 8080,
 		ExtraArgs: func(m *e2e.Minikube) []string {
 			return []string{
-        "--set", "logging.level=debug",
-        "--set", "discovery.attributes.excludes.robot={robot.tags.*}",
-      }
+				"--set", "logging.level=debug",
+				"--set", "discovery.attributes.excludes.robot={robot.tags.*}",
+			}
 		},
 	}
 
@@ -32,10 +32,10 @@ func TestWithMinikube(t *testing.T) {
 			Name: "validate discovery",
 			Test: validateDiscovery,
 		},
-    {
-      Name: "target discovery",
-      Test: testDiscovery,
-    },
+		{
+			Name: "target discovery",
+			Test: testDiscovery,
+		},
 		{
 			Name: "run scaffold",
 			Test: testRunscaffold,
@@ -48,17 +48,17 @@ func validateDiscovery(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
 }
 
 func testDiscovery(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
-  ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-  defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-  target, err := e2e.PollForTarget(ctx, e, "com.steadybit.extension_scaffold.robot", func(target discovery_kit_api.Target) bool {
-    return e2e.HasAttribute(target, "steadybit.label", "Bender")
-  })
+	target, err := e2e.PollForTarget(ctx, e, "com.steadybit.extension_scaffold.robot", func(target discovery_kit_api.Target) bool {
+		return e2e.HasAttribute(target, "steadybit.label", "Bender")
+	})
 
-  require.NoError(t, err)
-  assert.Equal(t, target.TargetType, "com.steadybit.extension_scaffold.robot")
-  assert.Equal(t, target.Attributes["robot.reportedBy"], []string{"extension-scaffold"})
-  assert.NotContains(t, target.Attributes, "robot.tags.firstTag")
+	require.NoError(t, err)
+	assert.Equal(t, target.TargetType, "com.steadybit.extension_scaffold.robot")
+	assert.Equal(t, target.Attributes["robot.reportedBy"], []string{"extension-scaffold"})
+	assert.NotContains(t, target.Attributes, "robot.tags.firstTag")
 }
 
 func testRunscaffold(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
