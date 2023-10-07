@@ -36,15 +36,15 @@ func main() {
 	extbuild.PrintBuildInformation()
 	extruntime.LogRuntimeInformation(zerolog.DebugLevel)
 
-	//This will start /health/liveness and /health/readiness endpoints on port 8081 for use with kubernetes
-	//The port can be configured using the STEADYBIT_EXTENSION_HEALTH_PORT environment variable
-	exthealth.SetReady(false)
-	exthealth.StartProbes(8081)
-
 	// Most extensions require some form of configuration. These calls exist to parse and validate the
 	// configuration obtained from environment variables.
 	config.ParseConfiguration()
 	config.ValidateConfiguration()
+
+	//This will start /health/liveness and /health/readiness endpoints on port 8081 for use with kubernetes
+	//The port can be configured using the STEADYBIT_EXTENSION_HEALTH_PORT environment variable
+	exthealth.SetReady(false)
+	exthealth.StartProbes(8081)
 
 	// This call registers a handler for the extension's root path. This is the path initially accessed
 	// by the Steadybit agent to obtain the extension's capabilities.
