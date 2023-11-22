@@ -5,61 +5,43 @@
 package extrobots
 
 import (
+	"context"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_commons"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-scaffold/config"
-	"net/http"
+	"time"
 )
 
-const discoveryBasePath = basePath + "/discovery"
-
-func RegisterDiscoveryHandlers() {
-	exthttp.RegisterHttpHandler(discoveryBasePath, exthttp.GetterAsHandler(getDiscoveryDescription))
-	exthttp.RegisterHttpHandler(discoveryBasePath+"/target-description", exthttp.GetterAsHandler(getTargetDescription))
-	exthttp.RegisterHttpHandler(discoveryBasePath+"/attribute-descriptions", exthttp.GetterAsHandler(getAttributeDescriptions))
-	exthttp.RegisterHttpHandler(discoveryBasePath+"/discovered-targets", getDiscoveredTargets)
+type robotDiscovery struct {
 }
 
-func GetDiscoveryList() discovery_kit_api.DiscoveryList {
-	return discovery_kit_api.DiscoveryList{
-		Discoveries: []discovery_kit_api.DescribingEndpointReference{
-			{
-				Method: "GET",
-				Path:   discoveryBasePath,
-			},
-		},
-		TargetTypes: []discovery_kit_api.DescribingEndpointReference{
-			{
-				Method: "GET",
-				Path:   discoveryBasePath + "/target-description",
-			},
-		},
-		TargetAttributes: []discovery_kit_api.DescribingEndpointReference{
-			{
-				Method: "GET",
-				Path:   discoveryBasePath + "/attribute-descriptions",
-			},
-		},
-		TargetEnrichmentRules: []discovery_kit_api.DescribingEndpointReference{},
-	}
+var (
+	_ discovery_kit_sdk.TargetDescriber    = (*robotDiscovery)(nil)
+	_ discovery_kit_sdk.AttributeDescriber = (*robotDiscovery)(nil)
+)
+
+func NewRobotDiscovery() discovery_kit_sdk.TargetDiscovery {
+	discovery := &robotDiscovery{}
+	return discovery_kit_sdk.NewCachedTargetDiscovery(discovery,
+		discovery_kit_sdk.WithRefreshTargetsNow(),
+		discovery_kit_sdk.WithRefreshTargetsInterval(context.Background(), 1*time.Minute),
+	)
 }
 
-func getDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
+func (d *robotDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
 		Id:         targetID,
 		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
-			Method:       "GET",
-			Path:         discoveryBasePath + "/discovered-targets",
 			CallInterval: extutil.Ptr("1m"),
 		},
 	}
 }
 
-func getTargetDescription() discovery_kit_api.TargetDescription {
+func (d *robotDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
 		Id:      targetID,
 		Version: extbuild.GetSemverVersionStringOrUnknown(),
@@ -87,21 +69,19 @@ func getTargetDescription() discovery_kit_api.TargetDescription {
 	}
 }
 
-func getAttributeDescriptions() discovery_kit_api.AttributeDescriptions {
-	return discovery_kit_api.AttributeDescriptions{
-		Attributes: []discovery_kit_api.AttributeDescription{
-			{
-				Attribute: "robot.reportedBy",
-				Label: discovery_kit_api.PluralLabel{
-					One:   "Reported by",
-					Other: "Reported by",
-				},
+func (d *robotDiscovery) DescribeAttributes() []discovery_kit_api.AttributeDescription {
+	return []discovery_kit_api.AttributeDescription{
+		{
+			Attribute: "robot.reportedBy",
+			Label: discovery_kit_api.PluralLabel{
+				One:   "Reported by",
+				Other: "Reported by",
 			},
 		},
 	}
 }
 
-func getDiscoveredTargets(w http.ResponseWriter, _ *http.Request, _ []byte) {
+func (d *robotDiscovery) DiscoverTargets(_ context.Context) ([]discovery_kit_api.Target, error) {
 	targets := make([]discovery_kit_api.Target, len(config.Config.RobotNames))
 	for i, name := range config.Config.RobotNames {
 		targets[i] = discovery_kit_api.Target{
@@ -115,5 +95,5 @@ func getDiscoveredTargets(w http.ResponseWriter, _ *http.Request, _ []byte) {
 			},
 		}
 	}
-	exthttp.WriteBody(w, discovery_kit_api.DiscoveredTargets{Targets: discovery_kit_commons.ApplyAttributeExcludes(targets, config.Config.DiscoveryAttributesExcludesRobot)})
+	return discovery_kit_commons.ApplyAttributeExcludes(targets, config.Config.DiscoveryAttributesExcludesRobot), nil
 }

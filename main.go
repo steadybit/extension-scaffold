@@ -9,6 +9,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/event-kit/go/event_kit_api"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthealth"
@@ -53,7 +54,7 @@ func main() {
 	// This is a section you will most likely want to change: The registration of HTTP handlers
 	// for your extension. You might want to change these because the names do not fit, or because
 	// you do not have a need for all of them.
-	extrobots.RegisterDiscoveryHandlers()
+	discovery_kit_sdk.Register(extrobots.NewRobotDiscovery())
 	action_kit_sdk.RegisterAction(extrobots.NewLogAction())
 	extevents.RegisterEventListenerHandlers()
 
@@ -91,7 +92,7 @@ func getExtensionList() ExtensionListResponse {
 
 		// See this document to learn more about the discovery list:
 		// https://github.com/steadybit/discovery-kit/blob/main/docs/discovery-api.md#index-response
-		DiscoveryList: extrobots.GetDiscoveryList(),
+		DiscoveryList: discovery_kit_sdk.GetDiscoveryList(),
 
 		// See this document to learn more about the event listener list:
 		// https://github.com/steadybit/event-kit/blob/main/docs/event-api.md#event-listeners-list
