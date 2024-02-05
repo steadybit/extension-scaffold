@@ -33,7 +33,7 @@ func NewRobotDiscovery() discovery_kit_sdk.TargetDiscovery {
 
 func (d *robotDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         targetID,
+		Id:         targetType,
 		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			CallInterval: extutil.Ptr("1m"),
@@ -43,7 +43,7 @@ func (d *robotDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 
 func (d *robotDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
-		Id:      targetID,
+		Id:      targetType,
 		Version: extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:    extutil.Ptr(targetIcon),
 
@@ -86,7 +86,7 @@ func (d *robotDiscovery) DiscoverTargets(_ context.Context) ([]discovery_kit_api
 	for i, name := range config.Config.RobotNames {
 		targets[i] = discovery_kit_api.Target{
 			Id:         name,
-			TargetType: targetID,
+			TargetType: targetType,
 			Label:      name,
 			Attributes: map[string][]string{
 				"steadybit.label":     {name},
