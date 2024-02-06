@@ -33,8 +33,7 @@ func NewRobotDiscovery() discovery_kit_sdk.TargetDiscovery {
 
 func (d *robotDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         targetType,
-		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
+		Id: targetType,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			CallInterval: extutil.Ptr("1m"),
 		},
