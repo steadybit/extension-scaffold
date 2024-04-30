@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
+	"github.com/steadybit/advice-kit/go/advice_kit_api"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/event-kit/go/event_kit_api"
@@ -18,6 +19,7 @@ import (
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/steadybit/extension-kit/extruntime"
 	"github.com/steadybit/extension-scaffold/config"
+	"github.com/steadybit/extension-scaffold/extadvice/robot_maintenance"
 	"github.com/steadybit/extension-scaffold/extevents"
 	"github.com/steadybit/extension-scaffold/extrobots"
 	_ "go.uber.org/automaxprocs" // Importing automaxprocs automatically adjusts GOMAXPROCS.
@@ -60,6 +62,9 @@ func main() {
 	action_kit_sdk.RegisterAction(extrobots.NewLogAction())
 	extevents.RegisterEventListenerHandlers()
 
+	// Register the handler for the advice endpoint
+	exthttp.RegisterHttpHandler("/advice/robot-maintenance", exthttp.GetterAsHandler(robot_maintenance.GetAdviceDescriptionRobotMaintenance))
+
 	//This will install a signal handlder, that will stop active actions when receiving a SIGURS1, SIGTERM or SIGINT
 	action_kit_sdk.InstallSignalHandler()
 
@@ -84,6 +89,7 @@ type ExtensionListResponse struct {
 	action_kit_api.ActionList       `json:",inline"`
 	discovery_kit_api.DiscoveryList `json:",inline"`
 	event_kit_api.EventListenerList `json:",inline"`
+	advice_kit_api.AdviceList       `json:",inline"`
 }
 
 func getExtensionList() ExtensionListResponse {
@@ -99,5 +105,26 @@ func getExtensionList() ExtensionListResponse {
 		// See this document to learn more about the event listener list:
 		// https://github.com/steadybit/event-kit/blob/main/docs/event-api.md#event-listeners-list
 		EventListenerList: extevents.GetEventListenerList(),
+
+		// See this document to learn more about the advice list:
+		// https://github.com/steadybit/advice-kit/blob/main/docs/advice-api.md#index-response
+		AdviceList: advice_kit_api.AdviceList{
+			Advice: getAdviceRefs(),
+		},
 	}
+}
+
+func getAdviceRefs() []advice_kit_api.DescribingEndpointReference {
+	var refs []advice_kit_api.DescribingEndpointReference
+	refs = make([]advice_kit_api.DescribingEndpointReference, 0)
+	for _, adviceId := range config.Config.ActiveAdviceList {
+		// Maintenance advice
+		if adviceId == "*" || adviceId == robot_maintenance.RobotMaintenanceID {
+			refs = append(refs, advice_kit_api.DescribingEndpointReference{
+				Method: "GET",
+				Path:   "/advice/robot-maintenance",
+			})
+		}
+	}
+	return refs
 }

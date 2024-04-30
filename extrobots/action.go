@@ -44,14 +44,14 @@ func (l *logAction) NewEmptyState() LogActionState {
 // Describe returns the action description for the platform with all required information.
 func (l *logAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.log", targetType),
+		Id:          fmt.Sprintf("%s.log", TargetType),
 		Label:       "log",
 		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
 			// The target type this action is for
-			TargetType: targetType,
+			TargetType: TargetType,
 			// You can provide a list of target templates to help the user select targets.
 			// A template can be used to pre-fill a selection
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
@@ -75,10 +75,18 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 		//   External: The agent takes care and calls stop then the time has passed. Requires a duration parameter. Use this when the duration is known in advance.
 		//   Internal: The action has to implement the status endpoint to signal when the action is done. Use this when the duration is not known in advance.
 		//   Instantaneous: The action is done immediately. Use this for actions that happen immediately, e.g. a reboot.
-		TimeControl: action_kit_api.TimeControlInternal,
+		TimeControl: action_kit_api.TimeControlExternal,
 
 		// The parameters for the action
 		Parameters: []action_kit_api.ActionParameter{
+			{
+				Name:         "duration",
+				Label:        "Duration",
+				Type:         action_kit_api.Duration,
+				DefaultValue: extutil.Ptr("10s"),
+				Required:     extutil.Ptr(true),
+				Order:        extutil.Ptr(0),
+			},
 			{
 				Name:         "message",
 				Label:        "Message",
