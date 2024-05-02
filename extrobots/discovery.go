@@ -33,7 +33,7 @@ func NewRobotDiscovery() discovery_kit_sdk.TargetDiscovery {
 
 func (d *robotDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id: targetType,
+		Id: TargetType,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			CallInterval: extutil.Ptr("1m"),
 		},
@@ -42,7 +42,7 @@ func (d *robotDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 
 func (d *robotDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
-		Id:      targetType,
+		Id:      TargetType,
 		Version: extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:    extutil.Ptr(targetIcon),
 
@@ -83,14 +83,19 @@ func (d *robotDiscovery) DescribeAttributes() []discovery_kit_api.AttributeDescr
 func (d *robotDiscovery) DiscoverTargets(_ context.Context) ([]discovery_kit_api.Target, error) {
 	targets := make([]discovery_kit_api.Target, len(config.Config.RobotNames))
 	for i, name := range config.Config.RobotNames {
+		needsMaintenance := "true"
+		if name == "Bender" {
+			needsMaintenance = "false"
+		}
 		targets[i] = discovery_kit_api.Target{
 			Id:         name,
-			TargetType: targetType,
+			TargetType: TargetType,
 			Label:      name,
 			Attributes: map[string][]string{
-				"steadybit.label":     {name},
-				"robot.reportedBy":    {"extension-scaffold"},
-				"robot.tags.firstTag": {"just a tag"},
+				"steadybit.label":         {name},
+				"robot.reportedBy":        {"extension-scaffold"},
+				"robot.tags.firstTag":     {"just a tag"},
+				"robot.needs.maintenance": {needsMaintenance},
 			},
 		}
 	}
