@@ -63,9 +63,9 @@ func testDiscovery(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
 
 func testRunscaffold(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
 	config := struct {
-		Duration     int      `json:"duration"`
+		Duration int `json:"duration"`
 	}{
-		Duration:     3000,
+		Duration: 3000,
 	}
 	exec, err := e.RunAction("com.steadybit.extension_scaffold.robot.log", &action_kit_api.Target{
 		Name: "robot",
