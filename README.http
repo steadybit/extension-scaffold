@@ -284,11 +284,11 @@ Content-Type: application/json
 #
 #
 #
-# Advice
+#Advice
 #Advice allows you to check for common reliability gaps across your infrastructure and
 #suggest experiments to your users. Thanks to AdviceKit, you can also author your own
 #advice to cover your organization's specific reliability rules.
- #
+#
 # Our robot extension implements one piece of advice:
 #
 ###
