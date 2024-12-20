@@ -111,6 +111,7 @@ containerSecurityContext:
   capabilities:
     drop:
       - ALL
+
 # extraEnv -- Array with extra environment variables to add to the container
 # e.g:
 # extraEnv:
