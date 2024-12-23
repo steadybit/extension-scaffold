@@ -56,7 +56,7 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 			// A template can be used to pre-fill a selection
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
-					Label: "by robot name",
+					Label: "robot name",
 					Query: "steadybit.label=\"\"",
 				},
 			}),
