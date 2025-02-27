@@ -45,8 +45,8 @@ func (l *logAction) NewEmptyState() LogActionState {
 func (l *logAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
 		Id:          fmt.Sprintf("%s.log", TargetType),
-		Label:       "log",
-		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
+		Label:       "Log",
+		Description: "Collects information about the monitor status and optionally verifies that the monitor has an expected status.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
