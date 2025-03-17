@@ -36,6 +36,8 @@ RUN make licenses-report
 FROM alpine:3.21
 
 LABEL "steadybit.com.discovery-disabled"="true"
+LABEL "version"="${VERSION}"
+LABEL "revision"="${REVISION}"
 
 ARG USERNAME=steadybit
 ARG USER_UID=10000
