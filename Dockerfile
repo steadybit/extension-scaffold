@@ -5,7 +5,8 @@
 ##
 FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS build
 
-ARG TARGETOS TARGETARCH
+ARG TARGETOS
+ARG TARGETARCH
 ARG NAME
 ARG VERSION
 ARG REVISION
@@ -36,6 +37,9 @@ RUN make licenses-report
 ## Runtime
 ##
 FROM alpine:3.21
+
+ARG VERSION=unknown
+ARG REVISION=unknown
 
 LABEL "steadybit.com.discovery-disabled"="true"
 LABEL "version"="${VERSION}"
