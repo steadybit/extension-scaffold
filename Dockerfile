@@ -44,6 +44,7 @@ ARG REVISION=unknown
 LABEL "steadybit.com.discovery-disabled"="true"
 LABEL "version"="${VERSION}"
 LABEL "revision"="${REVISION}"
+RUN echo "$VERSION" > /version.txt && echo "$REVISION" > /revision.txt
 
 ARG USERNAME=steadybit
 ARG USER_UID=10000
