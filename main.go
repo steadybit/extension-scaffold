@@ -22,7 +22,10 @@ import (
 	"github.com/steadybit/extension-scaffold/config"
 	"github.com/steadybit/extension-scaffold/extadvice/robot_maintenance"
 	"github.com/steadybit/extension-scaffold/extevents"
+	"github.com/steadybit/extension-scaffold/extpreflight"
 	"github.com/steadybit/extension-scaffold/extrobots"
+	"github.com/steadybit/preflight-kit/go/preflight_kit_api"
+	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk"
 	_ "go.uber.org/automaxprocs" // Importing automaxprocs automatically adjusts GOMAXPROCS.
 )
 
@@ -71,6 +74,8 @@ func main() {
 	//This will register the coverage endpoints for the extension (used by action_kit_test)
 	action_kit_sdk.RegisterCoverageEndpoints()
 
+	preflight_kit_sdk.RegisterPreflight(extpreflight.NewSimplePreflight())
+
 	//This will switch the readiness state of the application to true.
 	exthealth.SetReady(true)
 
@@ -90,6 +95,7 @@ type ExtensionListResponse struct {
 	discovery_kit_api.DiscoveryList `json:",inline"`
 	event_kit_api.EventListenerList `json:",inline"`
 	advice_kit_api.AdviceList       `json:",inline"`
+	preflight_kit_api.PreflightList `json:",inline"`
 }
 
 func getExtensionList() ExtensionListResponse {
@@ -111,6 +117,10 @@ func getExtensionList() ExtensionListResponse {
 		AdviceList: advice_kit_api.AdviceList{
 			Advice: getAdviceRefs(),
 		},
+
+		// See this document to learn more about the preflight list:
+		// https://github.com/steadybit/preflight-kit/main/docs/preflight-api.md#index-response
+		PreflightList: preflight_kit_sdk.GetPreflightList(),
 	}
 }
 
