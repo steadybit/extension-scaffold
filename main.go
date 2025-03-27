@@ -75,6 +75,7 @@ func main() {
 	action_kit_sdk.RegisterCoverageEndpoints()
 
 	preflight_kit_sdk.RegisterPreflight(extpreflight.NewSimplePreflight())
+	preflight_kit_sdk.RegisterPreflight(extpreflight.NewMaintenanceWindowPreflight())
 
 	//This will switch the readiness state of the application to true.
 	exthealth.SetReady(true)

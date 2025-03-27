@@ -28,6 +28,7 @@ GET http://localhost:8080
 #- added Log-action (using ActionKit) and
 #- an event listener (using EventKit) and
 #- an added piece of advice (using AdviceKit).
+#- added Preflight Action (using PreflightKit).
 #
 #We will cover each of them subsequently.
 #
@@ -306,3 +307,93 @@ GET http://localhost:8080/advice/robot-maintenance
 #implemented.
 #
 #Refer to the [AdviceKit documentation](https://github.com/steadybit/advice-kit/blob/main/docs/advice-api.md) to learn more.
+
+
+#----------------------------------------------------------------------------------
+#
+#
+## Preflights
+#Preflights are checks that run before experiment execution to validate whether an experiment
+#should be allowed to run based on predefined criteria. Preflights can prevent experiment
+#execution if certain conditions are not met, such as being within a maintenance window.
+#
+#Extensions can contribute custom preflight checks by implementing the PreflightKit interface.
+#
+#Preflight checks expose endpoints to list available checks, describe them, and execute them.
+#The execution follows a lifecycle of start, status, and cancel phases that ensure proper
+#validation of conditions before allowing experiment execution.
+#
+### Preflight List
+#The preflight list returns all supported preflight checks provided by the extension.
+#This is the entry point for discovering what preflight checks the extension offers.
+
+###
+GET http://localhost:8080/
+###
+
+#Our extension would return a list of supported preflight checks, for example a
+#maintenance window check. The response would include paths to get more details about each check.
+#
+### Preflight Description
+#The preflight description provides metadata about a specific preflight check, including
+#what it's called, what it does, and what endpoints to call during execution.
+
+###
+GET http://localhost:8080/com.example.preflights.maintenance-window
+###
+
+#The description includes properties like id, label, description, and version, as well as
+#references to the start, status, and cancel endpoints that implement the preflight check's lifecycle.
+#
+### Preflight Execution
+#Preflight execution follows a three-phase lifecycle: start, status, and cancel.
+#
+#### Start
+#The start phase initiates the preflight check process with information about the experiment
+#that is about to be executed.
+
+###
+POST http://localhost:8080/com.example.preflights.maintenance-window/start
+Content-Type: application/json
+
+{
+  "preflightActionExecutionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "experimentExecution": {
+    "id": "4ba85f64-5717-4562-b3fc-2c963f66afa7",
+    "name": "Check Robot API Resilience",
+    "description": "This experiment tests the resilience of our robot API"
+  }
+}
+###
+
+#### Status
+#The status phase checks if the preflight check has completed and whether it was successful.
+#For long-running checks, this endpoint will be called repeatedly at the interval specified
+#in the preflight description.
+
+###
+POST http://localhost:8080/com.example.preflights.maintenance-window/status
+Content-Type: application/json
+
+{
+  "preflightActionExecutionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+###
+
+#The status response indicates whether the check is completed, and if there's an error that
+#should prevent the experiment from running.
+#
+#### Cancel
+#The cancel phase allows cleanup of any resources associated with a preflight check,
+#particularly important for long-running checks.
+
+###
+POST http://localhost:8080/com.example.preflights.maintenance-window/cancel
+Content-Type: application/json
+
+{
+  "preflightActionExecutionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+###
+
+#Refer to the [PreflightKit documentation](https://github.com/steadybit/preflight-kit/blob/main/docs/preflight-api.md) to learn more.
