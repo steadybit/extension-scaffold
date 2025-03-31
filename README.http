@@ -331,8 +331,8 @@ GET http://localhost:8080/advice/robot-maintenance
 GET http://localhost:8080/
 ###
 
-#Our extension would return a list of supported preflight checks, for example a
-#maintenance window check. The response would include paths to get more details about each check.
+#Our extension returns a list of supported preflight checks, for example a
+#maintenance window check. The response includes paths to get more details about each check.
 #
 ### Preflight Description
 #The preflight description provides metadata about a specific preflight check, including
@@ -359,7 +359,7 @@ Content-Type: application/json
 {
   "preflightActionExecutionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "experimentExecution": {
-    "id": "4ba85f64-5717-4562-b3fc-2c963f66afa7",
+    "id": 123,
     "name": "Check Robot API Resilience",
     "description": "This experiment tests the resilience of our robot API"
   }
