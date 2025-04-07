@@ -19,8 +19,8 @@ require (
 	github.com/steadybit/discovery-kit/go/discovery_kit_test v1.1.2
 	github.com/steadybit/event-kit/go/event_kit_api v1.5.0
 	github.com/steadybit/extension-kit v1.9.0
-	github.com/steadybit/preflight-kit/go/preflight_kit_api v0.0.0-20250324203323-9f6f1954b21c
-	github.com/steadybit/preflight-kit/go/preflight_kit_sdk v0.0.0-20250324203323-9f6f1954b21c
+	github.com/steadybit/preflight-kit/go/preflight_kit_api v1.0.0
+	github.com/steadybit/preflight-kit/go/preflight_kit_sdk v1.0.0
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/automaxprocs v1.6.0
 )

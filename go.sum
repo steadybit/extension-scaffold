@@ -156,10 +156,10 @@ github.com/steadybit/event-kit/go/event_kit_api v1.5.0 h1:iq2zzGrvMxJoLxwbIA7jxU
 github.com/steadybit/event-kit/go/event_kit_api v1.5.0/go.mod h1:SilUGxfSKOu0hTJcLDrjdjo2Pm0ZLIMUrugCK9nSQ6o=
 github.com/steadybit/extension-kit v1.9.0 h1:DMlskHGofpKs0y+2M5WmuWCB5+E5imR20xaKr3F3mbM=
 github.com/steadybit/extension-kit v1.9.0/go.mod h1:8dDrQakwjcOUQuCkfgbFLwFByof63zla3sQj9zVI47Y=
-github.com/steadybit/preflight-kit/go/preflight_kit_api v0.0.0-20250324203323-9f6f1954b21c h1:w2zDX4uMi7WBprpTlccMof6PyLXX84HrX6cFmBYnC5A=
-github.com/steadybit/preflight-kit/go/preflight_kit_api v0.0.0-20250324203323-9f6f1954b21c/go.mod h1:ShhDC3q6XynzxCCbaogFOKIp2S0PJH6SEGhwKlt3bik=
-github.com/steadybit/preflight-kit/go/preflight_kit_sdk v0.0.0-20250324203323-9f6f1954b21c h1:NcdZAeOjtCoWAkMa5Fx2y/Ge3iZIiSpSY9ytBGQfLkk=
-github.com/steadybit/preflight-kit/go/preflight_kit_sdk v0.0.0-20250324203323-9f6f1954b21c/go.mod h1:ci6gRPMhRlGi5vmaEflmIK1axJCrtivFof+6FM0dt4c=
+github.com/steadybit/preflight-kit/go/preflight_kit_api v1.0.0 h1:NPeDvS5ZXYySYL0ZYEmbVt9t3xYZble0NtG0MPb290I=
+github.com/steadybit/preflight-kit/go/preflight_kit_api v1.0.0/go.mod h1:DChhNmKfR0o8nou991/yjzE7SBav6em9i5tAjI9v/hE=
+github.com/steadybit/preflight-kit/go/preflight_kit_sdk v1.0.0 h1:GPlevOSpOkaXOzXsCaug9LMsDxPOYM7/3NajMG4krSA=
+github.com/steadybit/preflight-kit/go/preflight_kit_sdk v1.0.0/go.mod h1:D7uk2hdeGCGsmH9q5555MdDdhN//UYGVvbT3MLMaKv8=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.5.2 h1:xuMeJ0Sdp5ZMRXx/aWO6RZxdr3beISkG5/G/aIRr3pY=
 github.com/stretchr/objx v0.5.2/go.mod h1:FRsXN1f5AsAjCGJKqEizvkpNtU+EGNCLh3NxZ/8L+MA=
