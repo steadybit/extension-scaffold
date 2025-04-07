@@ -10,10 +10,10 @@ import (
 	"sync"
 )
 
-// MaintenanceWindowPreflight checks if experiments run within allowed time windows
+// MaintenanceWindowPreflight actions if experiments run within allowed time windows
 type MaintenanceWindowPreflight struct {
 	// You can add fields here for configuration, etc.
-	runningPreflights sync.Map // Used to track running preflight checks
+	runningPreflights sync.Map // Used to track running preflight actions
 	statusCounts      sync.Map // Used to count status calls
 }
 
@@ -25,11 +25,11 @@ func NewMaintenanceWindowPreflight() *MaintenanceWindowPreflight {
 // Describe returns the preflight description
 func (p *MaintenanceWindowPreflight) Describe() preflight_kit_api.PreflightDescription {
 	return preflight_kit_api.PreflightDescription{
-		Id:          "com.example.preflights.maintenance-window",
-		Version:     "v0.1.0",
-		Label:       "Maintenance Window Check",
-		Description: "Ensures experiments only run during specified maintenance windows",
-		Icon: extutil.Ptr("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIxQzE2Ljk3MDYgMjEgMjEgMTYuOTcwNiAyMSAxMkMyMSA3LjAyOTQ0IDE2Ljk3MDYgMyAxMiAzQzcuMDI5NDQgMyAzIDcuMDI5NDQgMyAxMkMzIDE2Ljk3MDYgNy4wMjk0NCAyMSAxMiAyMVoiIHN0cm9rZT0iIzE4MTgxOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTEyIDYuNzVWMTJINi43NjgwMSIgc3Ryb2tlPSIjMTgxODE4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K"),
+		Id:                      "com.example.preflights.maintenance-window",
+		Version:                 "v0.1.0",
+		Label:                   "Maintenance Window Check",
+		Description:             "Ensures experiments only run during specified maintenance windows",
+		Icon:                    extutil.Ptr("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIxQzE2Ljk3MDYgMjEgMjEgMTYuOTcwNiAyMSAxMkMyMSA3LjAyOTQ0IDE2Ljk3MDYgMyAxMiAzQzcuMDI5NDQgMyAzIDcuMDI5NDQgMyAxMkMzIDE2Ljk3MDYgNy4wMjk0NCAyMSAxMiAyMVoiIHN0cm9rZT0iIzE4MTgxOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTEyIDYuNzVWMTJINi43NjgwMSIgc3Ryb2tlPSIjMTgxODE4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K"),
 		TargetAttributeIncludes: []string{"host.hostname", "k8s.deployment"},
 		// Define endpoint references for the preflight lifecycle
 		Start: preflight_kit_api.MutatingEndpointReference{},
@@ -40,7 +40,7 @@ func (p *MaintenanceWindowPreflight) Describe() preflight_kit_api.PreflightDescr
 	}
 }
 
-// Start initiates the preflight check
+// Start initiates the preflight action
 func (p *MaintenanceWindowPreflight) Start(_ context.Context, request preflight_kit_api.StartPreflightRequestBody) (*preflight_kit_api.StartResult, error) {
 	// Store the experiment execution details for later use
 	p.runningPreflights.Store(request.PreflightActionExecutionId, request.ExperimentExecution)
@@ -99,7 +99,7 @@ func (p *MaintenanceWindowPreflight) Status(_ context.Context, request preflight
 	return &preflight_kit_api.StatusResult{Completed: true}, nil
 }
 
-// Cancel stops the preflight check
+// Cancel stops the preflight action
 func (p *MaintenanceWindowPreflight) Cancel(_ context.Context, request preflight_kit_api.CancelPreflightRequestBody) (*preflight_kit_api.CancelResult, error) {
 	// Clean up any resources associated with this preflight
 	p.runningPreflights.Delete(request.PreflightActionExecutionId)

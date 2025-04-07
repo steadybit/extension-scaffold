@@ -317,25 +317,25 @@ GET http://localhost:8080/advice/robot-maintenance
 #should be allowed to run based on predefined criteria. Preflights can prevent experiment
 #execution if certain conditions are not met, such as being within a maintenance window.
 #
-#Extensions can contribute custom preflight checks by implementing the PreflightKit interface.
+#Extensions can contribute custom preflight actions by implementing the PreflightKit interface.
 #
-#Preflight checks expose endpoints to list available checks, describe them, and execute them.
+#Preflight actions expose endpoints to list available checks, describe them, and execute them.
 #The execution follows a lifecycle of start, status, and cancel phases that ensure proper
 #validation of conditions before allowing experiment execution.
 #
 ### Preflight List
-#The preflight list returns all supported preflight checks provided by the extension.
-#This is the entry point for discovering what preflight checks the extension offers.
+#The preflight list returns all supported preflight actions provided by the extension.
+#This is the entry point for discovering what preflight actions the extension offers.
 
 ###
 GET http://localhost:8080/
 ###
 
-#Our extension returns a list of supported preflight checks, for example a
+#Our extension returns a list of supported preflight actions, for example a
 #maintenance window check. The response includes paths to get more details about each check.
 #
 ### Preflight Description
-#The preflight description provides metadata about a specific preflight check, including
+#The preflight description provides metadata about a specific preflight action, including
 #what it's called, what it does, and what endpoints to call during execution.
 
 ###
@@ -343,13 +343,13 @@ GET http://localhost:8080/com.example.preflights.maintenance-window
 ###
 
 #The description includes properties like id, label, description, and version, as well as
-#references to the start, status, and cancel endpoints that implement the preflight check's lifecycle.
+#references to the start, status, and cancel endpoints that implement the preflight action's lifecycle.
 #
 ### Preflight Execution
 #Preflight execution follows a three-phase lifecycle: start, status, and cancel.
 #
 #### Start
-#The start phase initiates the preflight check process with information about the experiment
+#The start phase initiates the preflight action process with information about the experiment
 #that is about to be executed.
 
 ###
@@ -367,7 +367,7 @@ Content-Type: application/json
 ###
 
 #### Status
-#The status phase checks if the preflight check has completed and whether it was successful.
+#The status phase checks if the preflight action has completed and whether it was successful.
 #For long-running checks, this endpoint will be called repeatedly at the interval specified
 #in the preflight description.
 
@@ -384,7 +384,7 @@ Content-Type: application/json
 #should prevent the experiment from running.
 #
 #### Cancel
-#The cancel phase allows cleanup of any resources associated with a preflight check,
+#The cancel phase allows cleanup of any resources associated with a preflight action,
 #particularly important for long-running checks.
 
 ###
