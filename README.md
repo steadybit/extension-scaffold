@@ -40,3 +40,35 @@ To use this scaffold, you need to:
  6. Create an empty branch named "gh-pages"
  7. After the first build, ensure that you make the Docker image public through `packages -> {{your package name}} -> Package settings -> Change visibility`
 
+### How to test this extension
+
+You can test this extension by deploying a Steadybit agent in a local minikube cluster and connecting it to your locally running extension.
+
+1. Start your extension locally on port 8080 with the needed environment variables, if any. For example:
+	 ```bash
+	 export STEADYBIT_EXTENSION_ROBOT_NAMES="robot1,robot2"
+	 make run
+	 ```
+
+2. Install a Steadybit agent in minikube that connects to your on-prem or our saas Steadybit platform and points to your local extension:
+   ```bash
+   helm repo add steadybit https://steadybit.github.io/helm-charts
+   helm repo update
+   helm install steadybit-agent --namespace steadybit-agent \
+     --create-namespace \
+     --set agent.key=<replace-me> \
+     --set agent.registerUrl=https://platform.steadybit.com \
+     --set global.clusterName="minikube" \
+     --set extension-container.container.runtime=docker \
+     --set "agent.env[0].name=STEADYBIT_AGENT_EXTENSIONS_REGISTRATIONS_0_URL" \
+     --set "agent.env[0].value=http://host.minikube.internal:8080/" \
+     steadybit/steadybit-agent
+   ```
+
+The `agent.env[0].value=STEADYBIT_AGENT_EXTENSIONS_REGISTRATIONS_0_URL` is the URL of your locally running extension.
+If you are using an on-prem Steadybit platform, you can set the `agent.registerUrl` to your on-prem URL. If you are using our SaaS platform, you can set it to `https://platform.steadybit.com`.
+
+3. After successful installation, you should be able to see your extension's functionality in the Steadybit Platform.
+
+Note: The `host.minikube.internal` domain resolves to your host machine from inside minikube, allowing the agent to access your locally running extension.
+
