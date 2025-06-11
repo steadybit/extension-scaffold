@@ -52,7 +52,7 @@ func testDiscovery(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
 	defer cancel()
 
 	target, err := e2e.PollForTarget(ctx, e, "com.steadybit.extension_scaffold.robot", func(target discovery_kit_api.Target) bool {
-		return e2e.HasAttribute(target, "steadybit.label", "Bender")
+		return e2e.HasAttribute(target, "robot.name", "Bender")
 	})
 
 	require.NoError(t, err)

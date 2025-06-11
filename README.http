@@ -63,7 +63,7 @@ GET http://localhost:8080
 GET http://localhost:8080/com.steadybit.extension_scaffold.robot/discovery/target-description
 ###
 
-#You can see that the robot targets are described using two attributes (`steadybit.label`, `robot.reportedBy`).
+#You can see that the robot targets are described using two attributes (`robot.name`, `robot.reportedBy`).
 #These can be detailed using the target attributes interface.
 #
 ### Target Description: Attributes

@@ -55,12 +55,12 @@ func (d *robotDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 		// Specify attributes shown in table columns and to be used for sorting
 		Table: discovery_kit_api.Table{
 			Columns: []discovery_kit_api.Column{
-				{Attribute: "steadybit.label"},
+				{Attribute: "robot.name"},
 				{Attribute: "robot.reportedBy"},
 			},
 			OrderBy: []discovery_kit_api.OrderBy{
 				{
-					Attribute: "steadybit.label",
+					Attribute: "robot.name",
 					Direction: "ASC",
 				},
 			},
@@ -70,6 +70,13 @@ func (d *robotDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 
 func (d *robotDiscovery) DescribeAttributes() []discovery_kit_api.AttributeDescription {
 	return []discovery_kit_api.AttributeDescription{
+		{
+			Attribute: "robot.name",
+			Label: discovery_kit_api.PluralLabel{
+				One:   "Name",
+				Other: "Names",
+			},
+		},
 		{
 			Attribute: "robot.reportedBy",
 			Label: discovery_kit_api.PluralLabel{
@@ -92,7 +99,7 @@ func (d *robotDiscovery) DiscoverTargets(_ context.Context) ([]discovery_kit_api
 			TargetType: TargetType,
 			Label:      name,
 			Attributes: map[string][]string{
-				"steadybit.label":         {name},
+				"robot.name":              {name},
 				"robot.reportedBy":        {"extension-scaffold"},
 				"robot.tags.firstTag":     {"just a tag"},
 				"robot.needs.maintenance": {needsMaintenance},

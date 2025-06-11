@@ -1,6 +1,6 @@
 {
-	"name": "Robot Maintenance of ${target.attr('steadybit.label')}",
-	"hypothesis": "In case of am often used robot ${target.attr('steadybit.label')}, we need to do maintenance by using the log action.",
+	"name": "Robot Maintenance of ${target.attr('robot.name')}",
+	"hypothesis": "In case of am often used robot ${target.attr('robot.name')}, we need to do maintenance by using the log action.",
 	"lanes": [
 		{
 			"steps": [
@@ -10,7 +10,7 @@
 					"parameters": {
 						"duration": "40s"
 					},
-					"customLabel": "TODO VALIDATION: GIVEN: ${target.attr('steadybit.label')} does not works properly"
+					"customLabel": "TODO VALIDATION: GIVEN: ${target.attr('robot.name')} does not works properly"
 				},
 				{
 					"type": "action",
@@ -19,7 +19,7 @@
 						"message": "do maintenance",
 						"duration": "60s"
 					},
-					"customLabel": "WHEN: Maintaining robot ${target.attr('steadybit.label')}",
+					"customLabel": "WHEN: Maintaining robot ${target.attr('robot.name')}",
 					"actionType": "com.steadybit.extension_scaffold.robot.log",
 					"radius": {
 						"targetType": "com.steadybit.extension_scaffold.robot",
@@ -27,10 +27,10 @@
 							"operator": "AND",
 							"predicates": [
 								{
-									"key": "steadybit.label",
+									"key": "robot.name",
 									"operator": "EQUALS",
 									"values": [
-										"${target.attr('steadybit.label')}"
+										"${target.attr('robot.name')}"
 									]
 								}
 							]
@@ -45,7 +45,7 @@
 					"parameters": {
 						"duration": "60s"
 					},
-					"customLabel": "TODO VALIDATION: THEN: ${target.attr('steadybit.label')} recovers"
+					"customLabel": "TODO VALIDATION: THEN: ${target.attr('robot.name')} recovers"
 				}
 			]
 		}

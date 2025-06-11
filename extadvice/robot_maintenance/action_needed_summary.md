@@ -1,2 +1,2 @@
-When your robot ${target.attr('steadybit.label')} is used often, it needs maintenance.
+When your robot ${target.attr('robot.name')} is used often, it needs maintenance.
 

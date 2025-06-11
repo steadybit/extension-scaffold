@@ -1,1 +1,1 @@
-Robot maintenance is a crucial part of keeping your ${target.attr('steadybit.label')} in good working order. Regular maintenance ensures that your ${target.attr('steadybit.label')} is running smoothly and efficiently, reducing the risk of unexpected downtime and costly repairs.
+Robot maintenance is a crucial part of keeping your ${target.attr('robot.name')} in good working order. Regular maintenance ensures that your ${target.attr('robot.name')} is running smoothly and efficiently, reducing the risk of unexpected downtime and costly repairs.

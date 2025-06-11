@@ -57,7 +57,7 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label: "robot name",
-					Query: "steadybit.label=\"\"",
+					Query: "robot.name=\"\"",
 				},
 			}),
 		}),

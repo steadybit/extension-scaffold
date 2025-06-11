@@ -45,7 +45,7 @@ func GetAdviceDescriptionRobotMaintenance() advice_kit_api.AdviceDefinition {
 						Id:               RobotMaintenanceID + ".experiment-1",
 						Type:             "EXPERIMENT",
 						Name:             "Robot Maintenance",
-						ShortDescription: "Check how ${target.attr('steadybit.label')} behaves when running a maintenance task.",
+						ShortDescription: "Check how ${target.attr('robot.name')} behaves when running a maintenance task.",
 						Experiment:       extutil.Ptr(advice_kit_api.Experiment(advice_common.ReadAdviceFile(RobotMaintenanceContent, "experiment_robot_maintenance.json"))),
 					},
 				}),
