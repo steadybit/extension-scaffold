@@ -64,5 +64,6 @@ func incrementSimpleStatusCounter(preflightActionExecutionId uuid.UUID) int {
 
 func (preflight *SimplePreflight) Cancel(_ context.Context, request preflight_kit_api.CancelPreflightRequestBody) (*preflight_kit_api.CancelResult, error) {
 	runningSimplePreflights.Delete(request.PreflightActionExecutionId)
+	statusSimpleCount.Delete(request.PreflightActionExecutionId)
 	return &preflight_kit_api.CancelResult{}, nil
 }
