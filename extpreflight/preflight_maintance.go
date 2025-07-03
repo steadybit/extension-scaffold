@@ -7,6 +7,7 @@ import (
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/preflight-kit/go/preflight_kit_api"
+	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk"
 	"sync"
 )
 
@@ -21,6 +22,11 @@ type MaintenanceWindowPreflight struct {
 func NewMaintenanceWindowPreflight() *MaintenanceWindowPreflight {
 	return &MaintenanceWindowPreflight{}
 }
+
+// Make sure action implements all required interfaces
+var (
+	_ preflight_kit_sdk.Preflight = (*MaintenanceWindowPreflight)(nil)
+)
 
 // Describe returns the preflight description
 func (p *MaintenanceWindowPreflight) Describe() preflight_kit_api.PreflightDescription {

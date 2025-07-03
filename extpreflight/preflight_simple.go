@@ -7,6 +7,7 @@ import (
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/preflight-kit/go/preflight_kit_api"
+	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk"
 	"sync"
 )
 
@@ -19,6 +20,11 @@ var statusSimpleCount = sync.Map{}
 func NewSimplePreflight() *SimplePreflight {
 	return &SimplePreflight{}
 }
+
+// Make sure action implements all required interfaces
+var (
+	_ preflight_kit_sdk.Preflight = (*SimplePreflight)(nil)
+)
 
 func (preflight *SimplePreflight) Describe() preflight_kit_api.PreflightDescription {
 	return preflight_kit_api.PreflightDescription{
