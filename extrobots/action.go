@@ -84,7 +84,7 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 			{
 				Name:         "duration",
 				Label:        "Duration",
-				Type:         action_kit_api.Duration,
+				Type:         action_kit_api.ActionParameterTypeDuration,
 				DefaultValue: extutil.Ptr("10s"),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(0),
@@ -93,7 +93,7 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 				Name:         "message",
 				Label:        "Message",
 				Description:  extutil.Ptr("What should we log to the console? Use %s to insert the robot name."),
-				Type:         action_kit_api.String,
+				Type:         action_kit_api.ActionParameterTypeString,
 				DefaultValue: extutil.Ptr("Hello from %s"),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(0),
