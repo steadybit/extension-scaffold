@@ -1,12 +1,12 @@
-/*
- * Copyright 2023 steadybit GmbH. All rights reserved.
- */
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
 
 package config
 
 import (
 	"github.com/kelseyhightower/envconfig"
 	"github.com/rs/zerolog/log"
+	"github.com/steadybit/advice-kit/go/advice_kit_sdk"
 )
 
 // Specification is the configuration specification for the extension. Configuration values can be applied
@@ -19,7 +19,7 @@ type Specification struct {
 	// variable STEADYBIT_EXTENSION_DISCOVERY_ATTRIBUTES_EXCLUDES_ROBOT="robot.label.a,robot.tags.*".
 	DiscoveryAttributesExcludesRobot []string `json:"discoveryAttributesExcludesRobot" split_words:"true" required:"false"`
 	// variable STEADYBIT_EXTENSION_ACTIVE_ADVICE_LIST="robot_maintenance". To activate all advice, set the value to "*". To exclude some advice, set the value to e.g. "com.steadybit.extension_scaffold.advice.robot-maintenance".
-	ActiveAdviceList []string `required:"false" split_words:"true" default:"*"`
+	advice_kit_sdk.AdviceConfig
 }
 
 var (

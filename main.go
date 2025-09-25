@@ -1,6 +1,5 @@
-/*
- * Copyright 2023 steadybit GmbH. All rights reserved.
- */
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
 
 package main
 
@@ -10,6 +9,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/advice-kit/go/advice_kit_api"
+	"github.com/steadybit/advice-kit/go/advice_kit_sdk"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/event-kit/go/event_kit_api"
@@ -66,7 +66,7 @@ func main() {
 	extevents.RegisterEventListenerHandlers()
 
 	// Register the handler for the advice endpoint
-	exthttp.RegisterHttpHandler("/advice/robot-maintenance", exthttp.GetterAsHandler(robot_maintenance.GetAdviceDescriptionRobotMaintenance))
+	advice_kit_sdk.RegisterAdvice(config.Config.AdviceConfig, robot_maintenance.GetAdviceDescriptionRobotMaintenance)
 
 	//This will install a signal handlder, that will stop active actions when receiving a SIGURS1, SIGTERM or SIGINT
 	extsignals.ActivateSignalHandlers()
@@ -115,27 +115,10 @@ func getExtensionList() ExtensionListResponse {
 
 		// See this document to learn more about the advice list:
 		// https://github.com/steadybit/advice-kit/blob/main/docs/advice-api.md#index-response
-		AdviceList: advice_kit_api.AdviceList{
-			Advice: getAdviceRefs(),
-		},
+		AdviceList: advice_kit_sdk.GetAdviceList(),
 
 		// See this document to learn more about the preflight list:
 		// https://github.com/steadybit/preflight-kit/main/docs/preflight-api.md#index-response
 		PreflightList: preflight_kit_sdk.GetPreflightList(),
 	}
-}
-
-func getAdviceRefs() []advice_kit_api.DescribingEndpointReference {
-	var refs []advice_kit_api.DescribingEndpointReference
-	refs = make([]advice_kit_api.DescribingEndpointReference, 0)
-	for _, adviceId := range config.Config.ActiveAdviceList {
-		// Maintenance advice
-		if adviceId == "*" || adviceId == robot_maintenance.RobotMaintenanceID {
-			refs = append(refs, advice_kit_api.DescribingEndpointReference{
-				Method: "GET",
-				Path:   "/advice/robot-maintenance",
-			})
-		}
-	}
-	return refs
 }
