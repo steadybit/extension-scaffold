@@ -2,20 +2,17 @@ package extpreflight
 
 import (
 	"context"
-	"errors"
-	"github.com/google/uuid"
-	extension_kit "github.com/steadybit/extension-kit"
+
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/preflight-kit/go/preflight_kit_api"
-	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk"
-	"sync"
+	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk/v2"
 )
 
 type SimplePreflight struct {
 }
-
-var runningSimplePreflights = sync.Map{}
-var statusSimpleCount = sync.Map{}
+type SimplePreflightState struct {
+	StatusCount int
+}
 
 func NewSimplePreflight() *SimplePreflight {
 	return &SimplePreflight{}
@@ -23,7 +20,7 @@ func NewSimplePreflight() *SimplePreflight {
 
 // Make sure action implements all required interfaces
 var (
-	_ preflight_kit_sdk.Preflight = (*SimplePreflight)(nil)
+	_ preflight_kit_sdk.Preflight[SimplePreflightState] = (*SimplePreflight)(nil)
 )
 
 func (preflight *SimplePreflight) Describe() preflight_kit_api.PreflightDescription {
@@ -42,34 +39,21 @@ func (preflight *SimplePreflight) Describe() preflight_kit_api.PreflightDescript
 	}
 }
 
-func (preflight *SimplePreflight) Start(_ context.Context, request preflight_kit_api.StartPreflightRequestBody) (*preflight_kit_api.StartResult, error) {
-	runningSimplePreflights.Store(request.PreflightActionExecutionId, request.ExperimentExecution)
+func (preflight *SimplePreflight) NewEmptyState() SimplePreflightState {
+	return SimplePreflightState{}
+}
+
+func (preflight *SimplePreflight) Start(_ context.Context, state *SimplePreflightState, request preflight_kit_api.StartPreflightRequestBody) (*preflight_kit_api.StartResult, error) {
 	return &preflight_kit_api.StartResult{}, nil
 }
 
-func (preflight *SimplePreflight) Status(_ context.Context, request preflight_kit_api.StatusPreflightRequestBody) (*preflight_kit_api.StatusResult, error) {
-	count := incrementSimpleStatusCounter(request.PreflightActionExecutionId)
-	if count < 2 {
+func (preflight *SimplePreflight) Status(_ context.Context, state *SimplePreflightState) (*preflight_kit_api.StatusResult, error) {
+	// Increment the status counter for this preflight
+	state.StatusCount = state.StatusCount + 1
+
+	if state.StatusCount < 2 {
 		return &preflight_kit_api.StatusResult{Completed: false, Error: nil}, nil
 	}
-	loadedExecution, ok := runningSimplePreflights.Load(request.PreflightActionExecutionId)
-	if !ok {
-		return nil, extutil.Ptr(extension_kit.ToError("Could not find preflight", errors.New("preflight not found")))
-	}
-	// Do something with the execution
-	var _ = loadedExecution.(preflight_kit_api.ExperimentExecutionAO)
+
 	return &preflight_kit_api.StatusResult{Completed: true}, nil
-}
-
-func incrementSimpleStatusCounter(preflightActionExecutionId uuid.UUID) int {
-	increment, _ := statusSimpleCount.LoadOrStore(preflightActionExecutionId, 0)
-	count := increment.(int) + 1
-	statusSimpleCount.Store(preflightActionExecutionId, count)
-	return count
-}
-
-func (preflight *SimplePreflight) Cancel(_ context.Context, request preflight_kit_api.CancelPreflightRequestBody) (*preflight_kit_api.CancelResult, error) {
-	runningSimplePreflights.Delete(request.PreflightActionExecutionId)
-	statusSimpleCount.Delete(request.PreflightActionExecutionId)
-	return &preflight_kit_api.CancelResult{}, nil
 }

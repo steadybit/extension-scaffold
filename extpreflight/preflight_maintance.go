@@ -3,19 +3,20 @@ package extpreflight
 import (
 	"context"
 	"errors"
-	"github.com/google/uuid"
+
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/preflight-kit/go/preflight_kit_api"
-	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk"
-	"sync"
+	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk/v2"
 )
 
 // MaintenanceWindowPreflight actions if experiments run within allowed time windows
 type MaintenanceWindowPreflight struct {
-	// You can add fields here for configuration, etc.
-	runningPreflights sync.Map // Used to track running preflight actions
-	statusCounts      sync.Map // Used to count status calls
+}
+
+type MaintenanceWindowPreflightState struct {
+	StatusCount   int
+	ExecutionName *string
 }
 
 // NewMaintenanceWindowPreflight creates a new maintenance window preflight
@@ -25,7 +26,7 @@ func NewMaintenanceWindowPreflight() *MaintenanceWindowPreflight {
 
 // Make sure action implements all required interfaces
 var (
-	_ preflight_kit_sdk.Preflight = (*MaintenanceWindowPreflight)(nil)
+	_ preflight_kit_sdk.Preflight[MaintenanceWindowPreflightState] = (*MaintenanceWindowPreflight)(nil)
 )
 
 // Describe returns the preflight description
@@ -46,10 +47,14 @@ func (p *MaintenanceWindowPreflight) Describe() preflight_kit_api.PreflightDescr
 	}
 }
 
+func (preflight *MaintenanceWindowPreflight) NewEmptyState() MaintenanceWindowPreflightState {
+	return MaintenanceWindowPreflightState{}
+}
+
 // Start initiates the preflight action
-func (p *MaintenanceWindowPreflight) Start(_ context.Context, request preflight_kit_api.StartPreflightRequestBody) (*preflight_kit_api.StartResult, error) {
-	// Store the experiment execution details for later use
-	p.runningPreflights.Store(request.PreflightActionExecutionId, request.ExperimentExecution)
+func (p *MaintenanceWindowPreflight) Start(_ context.Context, state *MaintenanceWindowPreflightState, request preflight_kit_api.StartPreflightRequestBody) (*preflight_kit_api.StartResult, error) {
+	// Store the experiment name in the state
+	state.ExecutionName = request.ExperimentExecution.Name
 
 	// Example of how to return an error if needed
 	if request.ExperimentExecution.Name != nil && *request.ExperimentExecution.Name == "TechnicalError" {
@@ -71,26 +76,18 @@ func (p *MaintenanceWindowPreflight) Start(_ context.Context, request preflight_
 }
 
 // Status checks the current status of the preflight
-func (p *MaintenanceWindowPreflight) Status(_ context.Context, request preflight_kit_api.StatusPreflightRequestBody) (*preflight_kit_api.StatusResult, error) {
+func (p *MaintenanceWindowPreflight) Status(_ context.Context, state *MaintenanceWindowPreflightState) (*preflight_kit_api.StatusResult, error) {
 	// Increment the status counter for this preflight
-	count := p.incrementStatusCounter(request.PreflightActionExecutionId)
+	state.StatusCount = state.StatusCount + 1
 
 	// Return not completed for the first few calls to simulate a longer-running check
-	if count < 2 {
+	if state.StatusCount < 2 {
 		return &preflight_kit_api.StatusResult{Completed: false}, nil
 	}
 
-	// Get the stored experiment execution
-	executionObj, ok := p.runningPreflights.Load(request.PreflightActionExecutionId)
-	if !ok {
-		return nil, extutil.Ptr(extension_kit.ToError("Preflight not found", errors.New("no preflight with given ID")))
-	}
-
-	execution := executionObj.(preflight_kit_api.ExperimentExecutionAO)
-
 	// Example check logic - in a real implementation, you would check
 	// if the current time is within the allowed maintenance window
-	if execution.Name != nil && *execution.Name == "OutsideMaintenanceWindow" {
+	if state.ExecutionName != nil && *state.ExecutionName == "OutsideMaintenanceWindow" {
 		return &preflight_kit_api.StatusResult{
 			Completed: true,
 			Error: &preflight_kit_api.PreflightKitError{
@@ -103,21 +100,4 @@ func (p *MaintenanceWindowPreflight) Status(_ context.Context, request preflight
 
 	// If all checks pass, return completed with no error
 	return &preflight_kit_api.StatusResult{Completed: true}, nil
-}
-
-// Cancel stops the preflight action
-func (p *MaintenanceWindowPreflight) Cancel(_ context.Context, request preflight_kit_api.CancelPreflightRequestBody) (*preflight_kit_api.CancelResult, error) {
-	// Clean up any resources associated with this preflight
-	p.runningPreflights.Delete(request.PreflightActionExecutionId)
-	p.statusCounts.Delete(request.PreflightActionExecutionId)
-
-	return &preflight_kit_api.CancelResult{}, nil
-}
-
-// incrementStatusCounter is a helper function to track status call counts
-func (p *MaintenanceWindowPreflight) incrementStatusCounter(id uuid.UUID) int {
-	current, _ := p.statusCounts.LoadOrStore(id, 0)
-	count := current.(int) + 1
-	p.statusCounts.Store(id, count)
-	return count
 }
