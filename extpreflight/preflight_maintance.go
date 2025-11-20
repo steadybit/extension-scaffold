@@ -30,7 +30,7 @@ var (
 )
 
 // Describe returns the preflight description
-func (p *MaintenanceWindowPreflight) Describe() preflight_kit_api.PreflightDescription {
+func (preflight *MaintenanceWindowPreflight) Describe() preflight_kit_api.PreflightDescription {
 	return preflight_kit_api.PreflightDescription{
 		Id:                      "com.example.preflights.maintenance-window",
 		Version:                 "v0.1.0",
