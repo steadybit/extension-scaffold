@@ -52,7 +52,7 @@ func (preflight *MaintenanceWindowPreflight) NewEmptyState() MaintenanceWindowPr
 }
 
 // Start initiates the preflight action
-func (p *MaintenanceWindowPreflight) Start(_ context.Context, state *MaintenanceWindowPreflightState, request preflight_kit_api.StartPreflightRequestBody) (*preflight_kit_api.StartResult, error) {
+func (preflight *MaintenanceWindowPreflight) Start(_ context.Context, state *MaintenanceWindowPreflightState, request preflight_kit_api.StartPreflightRequestBody) (*preflight_kit_api.StartResult, error) {
 	// Store the experiment name in the state
 	state.ExecutionName = request.ExperimentExecution.Name
 
@@ -76,7 +76,7 @@ func (p *MaintenanceWindowPreflight) Start(_ context.Context, state *Maintenance
 }
 
 // Status checks the current status of the preflight
-func (p *MaintenanceWindowPreflight) Status(_ context.Context, state *MaintenanceWindowPreflightState) (*preflight_kit_api.StatusResult, error) {
+func (preflight *MaintenanceWindowPreflight) Status(_ context.Context, state *MaintenanceWindowPreflightState) (*preflight_kit_api.StatusResult, error) {
 	// Increment the status counter for this preflight
 	state.StatusCount = state.StatusCount + 1
 
