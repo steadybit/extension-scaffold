@@ -38,7 +38,24 @@ To use this scaffold, you need to:
  4. Rename all occurrences of `extension-scaffold` to `extension-{{other name}}`
  5. Verify that the Docker and Helm installation instructions are correct in the `README.md`
  6. Create an empty branch named "gh-pages"
- 7. After the first build, ensure that you make the Docker image public through `packages -> {{your package name}} -> Package settings -> Change visibility`
+ 7. Configure the GitHub repository:
+    ```bash
+    # Enable auto-merge
+    gh api repos/<YOUR_ORG>/extension-<NAME> -X PATCH -f allow_auto_merge=true
+
+    # Add branch protection with required status checks
+    gh api repos/<YOUR_ORG>/extension-<NAME>/branches/main/protection \
+      -X PUT \
+      -f 'required_status_checks[strict]=false' \
+      -f 'required_status_checks[contexts][]=extension-ci / Audit' \
+      -f 'required_status_checks[contexts][]=extension-ci / Build Docker Images' \
+      -f 'required_status_checks[contexts][]=extension-ci / Build Linux Packages' \
+      -f 'required_status_checks[contexts][]=extension-ci / Test Helm Charts' \
+      -f 'enforce_admins=false' \
+      -f 'required_pull_request_reviews=' \
+      -f 'restrictions='
+    ```
+ 8. After the first build, ensure that you make the Docker image public through `packages -> {{your package name}} -> Package settings -> Change visibility`
 
 ### How to test this extension
 
