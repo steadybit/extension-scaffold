@@ -48,13 +48,13 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 		Label:       "Log",
 		Description: "Collects information about the monitor status and optionally verifies that the monitor has an expected status.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
-		Icon:        extutil.Ptr(targetIcon),
-		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+		Icon:        new(targetIcon),
+		TargetSelection: new(action_kit_api.TargetSelection{
 			// The target type this action is for
 			TargetType: TargetType,
 			// You can provide a list of target templates to help the user select targets.
 			// A template can be used to pre-fill a selection
-			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+			SelectionTemplates: new([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label: "robot name",
 					Query: "robot.name=\"\"",
@@ -62,9 +62,9 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 			}),
 		}),
 		// Used to categorize the actions in the UI
-		Technology: extutil.Ptr("Scaffold"),
+		Technology: new("Scaffold"),
 		//Optional sub-category
-		Category: extutil.Ptr("Robots"),
+		Category: new("Robots"),
 
 		// To clarify the purpose of the action, you can set a kind.
 		//   Attack: Will cause harm to targets
@@ -85,24 +85,24 @@ func (l *logAction) Describe() action_kit_api.ActionDescription {
 				Name:         "duration",
 				Label:        "Duration",
 				Type:         action_kit_api.ActionParameterTypeDuration,
-				DefaultValue: extutil.Ptr("10s"),
-				Required:     extutil.Ptr(true),
-				Order:        extutil.Ptr(0),
+				DefaultValue: new("10s"),
+				Required:     new(true),
+				Order:        new(0),
 			},
 			{
 				Name:         "message",
 				Label:        "Message",
-				Description:  extutil.Ptr("What should we log to the console? Use %s to insert the robot name."),
+				Description:  new("What should we log to the console? Use %s to insert the robot name."),
 				Type:         action_kit_api.ActionParameterTypeString,
-				DefaultValue: extutil.Ptr("Hello from %s"),
-				Required:     extutil.Ptr(true),
-				Order:        extutil.Ptr(0),
+				DefaultValue: new("Hello from %s"),
+				Required:     new(true),
+				Order:        new(0),
 			},
 		},
-		Status: extutil.Ptr(action_kit_api.MutatingEndpointReferenceWithCallInterval{
-			CallInterval: extutil.Ptr("1s"),
+		Status: new(action_kit_api.MutatingEndpointReferenceWithCallInterval{
+			CallInterval: new("1s"),
 		}),
-		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
+		Stop: new(action_kit_api.MutatingEndpointReference{}),
 	}
 }
 
@@ -123,7 +123,7 @@ func (l *logAction) Prepare(_ context.Context, state *LogActionState, request ac
 
 	return &action_kit_api.PrepareResult{
 		//These messages will show up in agent log
-		Messages: extutil.Ptr([]action_kit_api.Message{
+		Messages: new([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
 				Message: fmt.Sprintf("Prepared logging '%s'", state.FormattedMessage),
@@ -139,7 +139,7 @@ func (l *logAction) Start(_ context.Context, state *LogActionState) (*action_kit
 
 	return &action_kit_api.StartResult{
 		//These messages will show up in agent log
-		Messages: extutil.Ptr([]action_kit_api.Message{
+		Messages: new([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
 				Message: fmt.Sprintf("Started logging '%s'", state.FormattedMessage),
@@ -157,7 +157,7 @@ func (l *logAction) Status(_ context.Context, state *LogActionState) (*action_ki
 		//indicate that the action is still running
 		Completed: false,
 		//These messages will show up in agent log
-		Messages: extutil.Ptr([]action_kit_api.Message{
+		Messages: new([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
 				Message: fmt.Sprintf("Status for logging '%s'", state.FormattedMessage),
@@ -174,7 +174,7 @@ func (l *logAction) Stop(_ context.Context, state *LogActionState) (*action_kit_
 
 	return &action_kit_api.StopResult{
 		//These messages will show up in agent log
-		Messages: extutil.Ptr([]action_kit_api.Message{
+		Messages: new([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
 				Message: fmt.Sprintf("Stopped logging '%s'", state.FormattedMessage),

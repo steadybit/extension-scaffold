@@ -36,12 +36,12 @@ func (preflight *MaintenanceWindowPreflight) Describe() preflight_kit_api.Prefli
 		Version:                 "v0.1.0",
 		Label:                   "Maintenance Window Check",
 		Description:             "Ensures experiments only run during specified maintenance windows",
-		Icon:                    extutil.Ptr("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIxQzE2Ljk3MDYgMjEgMjEgMTYuOTcwNiAyMSAxMkMyMSA3LjAyOTQ0IDE2Ljk3MDYgMyAxMiAzQzcuMDI5NDQgMyAzIDcuMDI5NDQgMyAxMkMzIDE2Ljk3MDYgNy4wMjk0NCAyMSAxMiAyMVoiIHN0cm9rZT0iIzE4MTgxOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTEyIDYuNzVWMTJINi43NjgwMSIgc3Ryb2tlPSIjMTgxODE4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K"),
+		Icon:                    new("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIxQzE2Ljk3MDYgMjEgMjEgMTYuOTcwNiAyMSAxMkMyMSA3LjAyOTQ0IDE2Ljk3MDYgMyAxMiAzQzcuMDI5NDQgMyAzIDcuMDI5NDQgMyAxMkMzIDE2Ljk3MDYgNy4wMjk0NCAyMSAxMiAyMVoiIHN0cm9rZT0iIzE4MTgxOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTEyIDYuNzVWMTJINi43NjgwMSIgc3Ryb2tlPSIjMTgxODE4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K"),
 		TargetAttributeIncludes: []string{"host.hostname", "k8s.deployment"},
 		// Define endpoint references for the preflight lifecycle
 		Start: preflight_kit_api.MutatingEndpointReference{},
 		Status: preflight_kit_api.MutatingEndpointReferenceWithCallInterval{
-			CallInterval: extutil.Ptr("1s"), // Status will be checked every 1 second
+			CallInterval: new("1s"), // Status will be checked every 1 second
 		},
 		Cancel: &preflight_kit_api.MutatingEndpointReference{},
 	}
@@ -58,13 +58,13 @@ func (preflight *MaintenanceWindowPreflight) Start(_ context.Context, state *Mai
 
 	// Example of how to return an error if needed
 	if request.ExperimentExecution.Name != nil && *request.ExperimentExecution.Name == "TechnicalError" {
-		return nil, extutil.Ptr(extension_kit.ToError("Technical error during preflight start", errors.New("detailed error info")))
+		return nil, new(extension_kit.ToError("Technical error during preflight start", errors.New("detailed error info")))
 	}
 
 	// Example of returning a failure
 	if request.ExperimentExecution.Name != nil && *request.ExperimentExecution.Name == "StartFailure" {
 		return &preflight_kit_api.StartResult{
-			Error: extutil.Ptr(preflight_kit_api.PreflightKitError{
+			Error: new(preflight_kit_api.PreflightKitError{
 				Title:  "Preflight start failure",
 				Status: extutil.Ptr(preflight_kit_api.Failed),
 			}),
@@ -92,7 +92,7 @@ func (preflight *MaintenanceWindowPreflight) Status(_ context.Context, state *Ma
 			Completed: true,
 			Error: &preflight_kit_api.PreflightKitError{
 				Title:  "Outside maintenance window",
-				Detail: extutil.Ptr("Experiment is scheduled outside the allowed maintenance window (8 PM to 6 AM UTC)"),
+				Detail: new("Experiment is scheduled outside the allowed maintenance window (8 PM to 6 AM UTC)"),
 				Status: extutil.Ptr(preflight_kit_api.Failed),
 			},
 		}, nil
