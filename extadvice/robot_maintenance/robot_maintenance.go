@@ -4,7 +4,6 @@ import (
 	"embed"
 	"github.com/steadybit/advice-kit/go/advice_kit_api"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-scaffold/extadvice/advice_common"
 	"github.com/steadybit/extension-scaffold/extrobots"
 )
@@ -40,13 +39,13 @@ func GetAdviceDescriptionRobotMaintenance() advice_kit_api.AdviceDefinition {
 				Description: advice_kit_api.AdviceDefinitionStatusValidationNeededDescription{
 					Summary: advice_common.ReadAdviceFile(RobotMaintenanceContent, "validation_needed.md"),
 				},
-				Validation: extutil.Ptr([]advice_kit_api.Validation{
+				Validation: new([]advice_kit_api.Validation{
 					{
 						Id:               RobotMaintenanceID + ".experiment-1",
 						Type:             "EXPERIMENT",
 						Name:             "Robot Maintenance",
 						ShortDescription: "Check how ${target.attr('robot.name')} behaves when running a maintenance task.",
-						Experiment:       extutil.Ptr(advice_kit_api.Experiment(advice_common.ReadAdviceFile(RobotMaintenanceContent, "experiment_robot_maintenance.json"))),
+						Experiment:       new(advice_kit_api.Experiment(advice_common.ReadAdviceFile(RobotMaintenanceContent, "experiment_robot_maintenance.json"))),
 					},
 				}),
 			},

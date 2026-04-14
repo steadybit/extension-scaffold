@@ -10,7 +10,6 @@ import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_commons"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extutil"
 	"github.com/steadybit/extension-scaffold/config"
 	"time"
 )
@@ -35,7 +34,7 @@ func (d *robotDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
 		Id: TargetType,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
-			CallInterval: extutil.Ptr("1m"),
+			CallInterval: new("1m"),
 		},
 	}
 }
@@ -44,13 +43,13 @@ func (d *robotDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
 		Id:      TargetType,
 		Version: extbuild.GetSemverVersionStringOrUnknown(),
-		Icon:    extutil.Ptr(targetIcon),
+		Icon:    new(targetIcon),
 
 		// Labels used in the UI
 		Label: discovery_kit_api.PluralLabel{One: "Robot", Other: "Robots"},
 
 		// Category for the targets to appear in
-		Category: extutil.Ptr("example"),
+		Category: new("example"),
 
 		// Specify attributes shown in table columns and to be used for sorting
 		Table: discovery_kit_api.Table{
