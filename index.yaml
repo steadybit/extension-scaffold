@@ -1026,6 +1026,35 @@ entries:
         - name: Steadybit reliability hub
           url: https://hub.steadybit.com
     apiVersion: v2
+    appVersion: v1.0.7
+    created: "2026-05-21T10:20:40.772094428Z"
+    dependencies:
+    - name: extensionlib
+      repository: https://steadybit.github.io/helm-charts
+      version: ^1.5.2
+    description: Steadybit scaffold extension Helm chart for Kubernetes.
+    digest: e6bf768975a9b6447e1f8998d8d6bbf9bb4e934f29459a02872fb4d520c61504
+    home: https://www.steadybit.com/
+    icon: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+    maintainers:
+    - email: daniel.reuter@steadybit.com
+      name: reuda
+    name: steadybit-extension-scaffold
+    sources:
+    - https://github.com/steadybit/extension-scaffold
+    urls:
+    - https://github.com/steadybit/extension-scaffold/releases/download/steadybit-extension-scaffold-0.0.15/steadybit-extension-scaffold-0.0.15.tgz
+    version: 0.0.15
+  - annotations:
+      artifacthub.io/images: |
+        - name: logo
+          image: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+      artifacthub.io/links: |-
+        - name: Steadybit website
+          url: https://www.steadybit.com
+        - name: Steadybit reliability hub
+          url: https://hub.steadybit.com
+    apiVersion: v2
     appVersion: v1.0.6
     created: "2026-05-21T06:15:37.105362543Z"
     dependencies:
@@ -1393,4 +1422,4 @@ entries:
     urls:
     - https://github.com/steadybit/extension-scaffold/releases/download/steadybit-extension-scaffold-0.0.1/steadybit-extension-scaffold-0.0.1.tgz
     version: 0.0.1
-generated: "2026-05-21T06:15:37.106170565Z"
+generated: "2026-05-21T10:20:40.772446312Z"
