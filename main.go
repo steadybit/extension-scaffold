@@ -4,8 +4,6 @@
 package main
 
 import (
-	"time"
-
 	_ "github.com/KimMachineGun/automemlimit" // By default, it sets `GOMEMLIMIT` to 90% of cgroup's memory limit.
 	"github.com/rs/zerolog"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
@@ -29,8 +27,6 @@ import (
 	"github.com/steadybit/preflight-kit/go/preflight_kit_api"
 	"github.com/steadybit/preflight-kit/go/preflight_kit_sdk/v2"
 )
-
-var startedAt = time.Now().Format(time.RFC3339)
 
 func main() {
 	// Most Steadybit extensions leverage zerolog. To encourage persistent logging setups across extensions,
@@ -78,7 +74,7 @@ func main() {
 	preflight_kit_sdk.RegisterPreflight(extpreflight.NewSimplePreflight())
 	preflight_kit_sdk.RegisterPreflight(extpreflight.NewMaintenanceWindowPreflight())
 
-	exthttp.RegisterHttpHandler("/", exthttp.IfNoneMatchHandler(func() string { return startedAt }, exthttp.GetterAsHandler(getExtensionList)))
+	exthttp.RegisterRevisionedHandler("/", getExtensionList)
 
 	//This will switch the readiness state of the application to true.
 	exthealth.SetReady(true)
