@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.11
+
+- build(deps): bump github.com/steadybit/preflight-kit/go/preflight_kit_api
+- feat: support filtering targets out of discovery
+
 ## v1.0.10
 
 - chore(deps): update dependencies
