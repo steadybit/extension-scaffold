@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.12
+
+- build(deps): bump github.com/stretchr/testify from 1.11.1 to 1.12.0
+- chore(deps): bump steadybit kits and drop Go patch pin (#180)
+
 ## v1.0.11
 
 - build(deps): bump github.com/steadybit/preflight-kit/go/preflight_kit_api
