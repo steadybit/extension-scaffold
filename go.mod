@@ -8,7 +8,7 @@ require (
 	github.com/rs/zerolog v1.35.1
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.10.6
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.4.1
-	github.com/steadybit/action-kit/go/action_kit_test v1.4.7
+	github.com/steadybit/action-kit/go/action_kit_test v1.4.9
 	github.com/steadybit/advice-kit/go/advice_kit_api v1.2.5
 	github.com/steadybit/advice-kit/go/advice_kit_sdk v1.1.3
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.7.2
@@ -54,7 +54,7 @@ require (
 	github.com/klauspost/compress v1.19.2 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
-	github.com/moby/spdystream v0.5.0 // indirect
+	github.com/moby/spdystream v0.5.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
@@ -85,9 +85,9 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
-	k8s.io/api v0.35.0 // indirect
-	k8s.io/apimachinery v0.35.0 // indirect
-	k8s.io/client-go v0.35.0 // indirect
+	k8s.io/api v0.35.4 // indirect
+	k8s.io/apimachinery v0.35.4 // indirect
+	k8s.io/client-go v0.35.4 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20260127142750-a19766b6e2d4 // indirect
 	k8s.io/utils v0.0.0-20260108192941-914a6e750570 // indirect
