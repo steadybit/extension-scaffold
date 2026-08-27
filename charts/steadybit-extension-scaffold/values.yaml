@@ -143,5 +143,3 @@ discovery:
     excludes:
       # discovery.attributes.excludes.robot -- List of attributes to exclude from Robot discovery.
       robot: []
-
-# temporary CI verification marker - reverted immediately
