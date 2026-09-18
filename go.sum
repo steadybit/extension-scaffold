@@ -170,8 +170,8 @@ github.com/steadybit/discovery-kit/go/discovery_kit_test v1.2.2 h1:z6sSjOY/PJMyW
 github.com/steadybit/discovery-kit/go/discovery_kit_test v1.2.2/go.mod h1:QJKCpw29htOjS6ySVuuy6sVi5A34TPunGZZUXs+Lrxk=
 github.com/steadybit/event-kit/go/event_kit_api v1.6.4 h1:7AAeOAyzqkJ5cHXMpGS9cwB1qCRwADGczr3GmqUl70Y=
 github.com/steadybit/event-kit/go/event_kit_api v1.6.4/go.mod h1:4LnV6bQUCzMfbb1iQzsD8k+uRWv1YK82LDszi7hkrjY=
-github.com/steadybit/extension-kit v1.12.0 h1:HIIQg4kBSz6ReG/IkSDya27YvYj0XqONDZhBauJj2+o=
-github.com/steadybit/extension-kit v1.12.0/go.mod h1:vlOfQ4LkTRRLZhrSGkdLhvgi4YEZq8jR0yp05j9KYhI=
+github.com/steadybit/extension-kit v1.12.1 h1:5OwTSzuB8mB4XtCPUfu+OtxI6x2ofhg4QR+wVivfA0c=
+github.com/steadybit/extension-kit v1.12.1/go.mod h1:vlOfQ4LkTRRLZhrSGkdLhvgi4YEZq8jR0yp05j9KYhI=
 github.com/steadybit/preflight-kit/go/preflight_kit_api v1.4.7 h1:N18PX/ANUmJxxXx4t1F9xKnNlW9Uw8yXspJg/9ZfPh8=
 github.com/steadybit/preflight-kit/go/preflight_kit_api v1.4.7/go.mod h1:6+vagudeUm64iCIcZid9QfT5QbnZcXIshA9YU/yVq24=
 github.com/steadybit/preflight-kit/go/preflight_kit_sdk/v2 v2.2.1 h1:TZrV720UWgzAK0hHxU83K5W4M7OVRIMyYkOtCYMGUXA=
