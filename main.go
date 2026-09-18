@@ -17,6 +17,7 @@ import (
 	"github.com/steadybit/extension-kit/exthealth"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
+	"github.com/steadybit/extension-kit/extotel"
 	"github.com/steadybit/extension-kit/extruntime"
 	"github.com/steadybit/extension-kit/extsignals"
 	"github.com/steadybit/extension-scaffold/config"
@@ -37,6 +38,21 @@ func main() {
 	//  - to activate JSON logging, set the environment variable STEADYBIT_LOG_FORMAT="json"
 	//  - to set the log level to debug, set the environment variable STEADYBIT_LOG_LEVEL="debug"
 	extlogging.InitZeroLog()
+
+	// Exports OpenTelemetry traces so that an operator debugging a slow or
+	// timing-out action can see what happened inside this extension, not just the
+	// agent's side of the call. Every handler registered through exthttp then
+	// produces a span, and incoming trace context is honoured.
+	//
+	// Tracing stays off, and costs nothing, until an OTLP endpoint is configured.
+	// Configuration is entirely through the standard OTEL_* environment variables
+	// — see the extension-kit README. The returned shutdown function does not
+	// need calling: a signal handler flushes buffered spans on SIGTERM.
+	//
+	// Example
+	//  - to export to a collector, set OTEL_EXPORTER_OTLP_ENDPOINT="http://collector:4318"
+	//  - for gRPC, also set OTEL_EXPORTER_OTLP_PROTOCOL="grpc" and use port 4317
+	extotel.InitOpenTelemetry()
 
 	// Build information is set at compile-time. This line writes the build information to the log.
 	// The information is mostly handy for debugging purposes.
