@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.17
+
+- build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- build(deps): bump github.com/steadybit/preflight-kit/go/preflight_kit_api
+
 ## v1.0.16
 
 - Add OpenTelemetry tracing support
