@@ -89,3 +89,4 @@ If you are using an on-prem Steadybit platform, you can set the `agent.registerU
 
 Note: The `host.minikube.internal` domain resolves to your host machine from inside minikube, allowing the agent to access your locally running extension.
 
+
