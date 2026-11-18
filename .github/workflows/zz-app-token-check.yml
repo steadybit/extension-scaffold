@@ -1,0 +1,26 @@
+# TEST, do not merge: can the GitHub App mint a token that reaches the workflows of extension-deployer?
+name: zz-app-token-check
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/zz-app-token-check.yml
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ vars.GH_APP_STEADYBIT_APP_ID }}
+          private-key: ${{ secrets.GH_APP_STEADYBIT_PRIVATE_KEY }}
+          owner: steadybit
+          repositories: extension-deployer
+          permission-actions: write
+      - name: Read the restart workflow with that token
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: gh api repos/steadybit/extension-deployer/actions/workflows/extension-restart.yml --jq '{name, state, path}'
